@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culinary Compass</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <span class="material-icons-outlined">arrow_back</span>
+            <h1>Culinary Compass</h1>
+            <span class="material-icons-outlined">account_circle</span>
+        </div>
+    </header>
+
+    <main>
+        <section class="search-container">
+            <h2>Tìm nhà hàng phù hợp với bạn</h2>
+            <div class="search-bar">
+                <span class="material-icons-outlined">search</span>
+                <input type="text" id="search-input" placeholder="Tìm kiếm theo tên món ăn hoặc nhà hàng...">
+            </div>
+        </section>
+
+        <section class="filters-container">
+            <select id="radius-select" class="filter-select">
+                <option value="10">Vị: Bán kính 10km</option>
+                <option value="5">Vị: Bán kính 5km</option>
+                <option value="2">Vị: Bán kính 2km</option>
+                <option value="1">Vị: Bán kính 1km</option>
+            </select>
+
+            <select id="price-select" class="filter-select">
+                <option value="">Giá: Tất cả</option>
+                <option value="low">Giá: Thấp (dưới 25k)</option>
+                <option value="mid">Giá: Trung bình (25k-50k)</option>
+                <option value="high">Giá: Cao (trên 50k)</option>
+            </select>
+
+            <select id="cuisine-select" class="filter-select">
+                <option value="">Ẩm thực: Tất cả</option>
+                <option value="Noodle">Phở / Bún / Hủ tiếu</option>
+                <option value="Rice">Cơm</option>
+                <option value="Sandwich">Bánh mì</option>
+                <option value="Pancake">Bánh xèo</pre>
+                <option value="Appetizer">Món khai vị</option>
+                <option value="Dessert">Tráng miệng</option>
+            </select>
+
+            <select id="special-select" class="filter-select">
+                <option value="">Yêu cầu: Tất cả</option>
+                <option value="Popular">Phổ biến</option>
+                <option value="Vegan options">Có đồ chay</option>
+            </select>
+            
+            <div class="toggle-filter">
+                <label for="open-now-toggle">Đang mở cửa</label>
+                <input type="checkbox" id="open-now-toggle" class="toggle-input">
+            </div>
+
+            <select id="sort-by-select" class="filter-select sort-by">
+                <option value="distance">Sắp xếp: Khoảng cách</option>
+                <option value="rating">Sắp xếp: Đánh giá</option>
+            </select>
+        </section>
+
+        <section class="results-container">
+            <div id="loading-spinner" class="spinner"></div>
+            
+            <div id="restaurant-list" class="restaurant-grid">
+                </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
