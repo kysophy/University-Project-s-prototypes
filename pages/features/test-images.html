@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f8f8f8;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .test-image {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+        }
+        h2 { color: #DC2626; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🖼️ Restaurant Images Path Test</h1>
+    <p>This page tests if the image paths are correct from <code>pages/features/</code></p>
+    
+    <div class="test-container">
+        <h2>Test 1: Phở Lệ</h2>
+        <p>Path: <code>../../assets/images/restaurants-img/phole.png</code></p>
+        <img src="../../assets/images/restaurants-img/phole.png" 
+             alt="Phở Lệ" 
+             class="test-image"
+             onload="this.nextElementSibling.className='success'; this.nextElementSibling.textContent='✅ Image loaded successfully!'"
+             onerror="this.nextElementSibling.className='error'; this.nextElementSibling.textContent='❌ Image failed to load!'">
+        <p class="">Loading...</p>
+    </div>
+
+    <div class="test-container">
+        <h2>Test 2: Bánh Mì</h2>
+        <p>Path: <code>../../assets/images/restaurants-img/banhmi.png</code></p>
+        <img src="../../assets/images/restaurants-img/banhmi.png" 
+             alt="Bánh Mì" 
+             class="test-image"
+             onload="this.nextElementSibling.className='success'; this.nextElementSibling.textContent='✅ Image loaded successfully!'"
+             onerror="this.nextElementSibling.className='error'; this.nextElementSibling.textContent='❌ Image failed to load!'">
+        <p class="">Loading...</p>
+    </div>
+
+    <div class="test-container">
+        <h2>Test 3: Cơm Tấm</h2>
+        <p>Path: <code>../../assets/images/restaurants-img/comtam.png</code></p>
+        <img src="../../assets/images/restaurants-img/comtam.png" 
+             alt="Cơm Tấm" 
+             class="test-image"
+             onload="this.nextElementSibling.className='success'; this.nextElementSibling.textContent='✅ Image loaded successfully!'"
+             onerror="this.nextElementSibling.className='error'; this.nextElementSibling.textContent='❌ Image failed to load!'">
+        <p class="">Loading...</p>
+    </div>
+
+    <div class="test-container">
+        <h2>Test 4: All Images</h2>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="margin: 10px; text-align: center;">
+                <img src="../../assets/images/restaurants-img/phole.png" class="test-image" alt="Phở">
+                <p>phole.png</p>
+            </div>
+            <div style="margin: 10px; text-align: center;">
+                <img src="../../assets/images/restaurants-img/banhmi.png" class="test-image" alt="Bánh Mì">
+                <p>banhmi.png</p>
+            </div>
+            <div style="margin: 10px; text-align: center;">
+                <img src="../../assets/images/restaurants-img/comtam.png" class="test-image" alt="Cơm Tấm">
+                <p>comtam.png</p>
+            </div>
+            <div style="margin: 10px; text-align: center;">
+                <img src="../../assets/images/restaurants-img/bunbohue.png" class="test-image" alt="Bún Bò Huế">
+                <p>bunbohue.png</p>
+            </div>
+            <div style="margin: 10px; text-align: center;">
+                <img src="../../assets/images/restaurants-img/goicuon.png" class="test-image" alt="Gỏi Cuốn">
+                <p>goicuon.png</p>
+            </div>
+            <div style="margin: 10px; text-align: center;">
+                <img src="../../assets/images/restaurants-img/banhxeo.png" class="test-image" alt="Bánh Xèo">
+                <p>banhxeo.png</p>
+            </div>
+            <div style="margin: 10px; text-align: center;">
+                <img src="../../assets/images/restaurants-img/hutieu.png" class="test-image" alt="Hủ Tiếu">
+                <p>hutieu.png</p>
+            </div>
+            <div style="margin: 10px; text-align: center;">
+                <img src="../../assets/images/restaurants-img/che.png" class="test-image" alt="Chè">
+                <p>che.png</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>✅ If all images loaded successfully:</h2>
+        <p>The paths are correct! The issue might be:</p>
+        <ul>
+            <li>Flask server needs to be serving from the correct directory</li>
+            <li>Browser cache needs to be cleared (Ctrl + F5)</li>
+            <li>File permissions issue</li>
+        </ul>
+        
+        <h2>❌ If images failed to load:</h2>
+        <p>Check:</p>
+        <ul>
+            <li>File names match exactly (case-sensitive on some systems)</li>
+            <li>Files are in the correct folder</li>
+            <li>No special characters in file names</li>
+        </ul>
+    </div>
+
+    <div class="test-container">
+        <h2>🔗 Absolute Path Test</h2>
+        <p>Current page location: <code id="current-url"></code></p>
+        <p>Resolved image path: <code id="resolved-path"></code></p>
+        <script>
+            document.getElementById('current-url').textContent = window.location.href;
+            const img = document.createElement('img');
+            img.src = '../../assets/images/restaurants-img/phole.png';
+            document.getElementById('resolved-path').textContent = img.src;
+        </script>
+    </div>
+
+    <p style="margin-top: 40px; text-align: center;">
+        <a href="search.html" style="color: #DC2626; text-decoration: none; font-weight: bold;">
+            ← Back to Search Page
+        </a>
+    </p>
+</body>
+</html>
+

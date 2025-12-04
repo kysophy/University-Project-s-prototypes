@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Preferences Survey - Culinary Compass Vietnam</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/pages/food-survey.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo-section">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#DC2626" stroke="#DC2626" stroke-width="2"/>
+                        <path d="M2 17L12 22L22 17" stroke="#DC2626" stroke-width="2"/>
+                        <path d="M2 12L12 17L22 12" stroke="#DC2626" stroke-width="2"/>
+                    </svg>
+                </div>
+                <button class="back-button" onclick="window.location.href='../regions/hcmc.html'">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Survey Container -->
+    <div class="survey-container">
+        <div class="container">
+            <!-- Header -->
+            <div class="survey-header">
+                <h1 class="survey-title">Let's Find Your Perfect Food Tour! 🍜</h1>
+                <p class="survey-subtitle">Answer a few quick questions to get personalized restaurant recommendations</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">Question 1 of 4</p>
+            </div>
+
+            <!-- Survey Form -->
+            <form id="surveyForm" class="survey-form">
+                
+                <!-- Question 1: Dietary Restrictions -->
+                <div class="question-section active" data-question="1">
+                    <div class="question-card">
+                        <div class="question-icon">🛡️</div>
+                        <h2 class="question-title">First, do you have any dietary restrictions?</h2>
+                        <p class="question-description">Select all that apply - this helps us filter out foods you can't eat</p>
+                        
+                        <div class="options-grid">
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="dietary" value="none" id="dietary-none">
+                                <div class="option-content">
+                                    <div class="option-emoji">😋</div>
+                                    <div class="option-text">
+                                        <strong>None, I eat everything!</strong>
+                                        <span>The "Foodie" option</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="dietary" value="vegetarian">
+                                <div class="option-content">
+                                    <div class="option-emoji">🥗</div>
+                                    <div class="option-text">
+                                        <strong>Vegetarian</strong>
+                                        <span>No meat, but eggs/dairy ok</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="dietary" value="vegan">
+                                <div class="option-content">
+                                    <div class="option-emoji">🌱</div>
+                                    <div class="option-text">
+                                        <strong>Vegan</strong>
+                                        <span>No animal products</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="dietary" value="no-pork">
+                                <div class="option-content">
+                                    <div class="option-emoji">🚫🐷</div>
+                                    <div class="option-text">
+                                        <strong>No Pork</strong>
+                                        <span>Halal/Kosher friendly</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="dietary" value="no-seafood">
+                                <div class="option-content">
+                                    <div class="option-emoji">🚫🦐</div>
+                                    <div class="option-text">
+                                        <strong>No Seafood</strong>
+                                        <span>Allergic or preference</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="dietary" value="no-peanuts">
+                                <div class="option-content">
+                                    <div class="option-emoji">🚫🥜</div>
+                                    <div class="option-text">
+                                        <strong>Peanut Allergy</strong>
+                                        <span>Very important for Vietnam</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2: Dining Vibe -->
+                <div class="question-section" data-question="2">
+                    <div class="question-card">
+                        <div class="question-icon">✨</div>
+                        <h2 class="question-title">What kind of dining experience are you looking for?</h2>
+                        <p class="question-description">Choose the atmosphere that matches your mood</p>
+                        
+                        <div class="options-grid radio-options">
+                            <label class="option-card radio-option">
+                                <input type="radio" name="vibe" value="street-food" required>
+                                <div class="option-content">
+                                    <div class="option-emoji">🪑</div>
+                                    <div class="option-text">
+                                        <strong>Authentic Street Food</strong>
+                                        <span>Plastic stools, open air, bustling</span>
+                                    </div>
+                                    <div class="radio-mark"></div>
+                                </div>
+                            </label>
+
+                            <label class="option-card radio-option">
+                                <input type="radio" name="vibe" value="casual-dining" required>
+                                <div class="option-content">
+                                    <div class="option-emoji">🏠</div>
+                                    <div class="option-text">
+                                        <strong>Casual Dining</strong>
+                                        <span>Indoor, comfortable</span>
+                                    </div>
+                                    <div class="radio-mark"></div>
+                                </div>
+                            </label>
+
+                            <label class="option-card radio-option">
+                                <input type="radio" name="vibe" value="fine-dining" required>
+                                <div class="option-content">
+                                    <div class="option-emoji">🍽️</div>
+                                    <div class="option-text">
+                                        <strong>Fine Dining / Upscale</strong>
+                                        <span>AC, service, higher price</span>
+                                    </div>
+                                    <div class="radio-mark"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3: Spice Tolerance -->
+                <div class="question-section" data-question="3">
+                    <div class="question-card">
+                        <div class="question-icon">🌶️</div>
+                        <h2 class="question-title">How is your spice tolerance?</h2>
+                        <p class="question-description">Vietnamese food can be spicy - help us match your comfort level</p>
+                        
+                        <div class="options-grid radio-options">
+                            <label class="option-card radio-option">
+                                <input type="radio" name="spice" value="no-spice" required>
+                                <div class="option-content">
+                                    <div class="option-emoji">🌶️</div>
+                                    <div class="option-text">
+                                        <strong>No Spice (Mild)</strong>
+                                        <span>Keep it gentle please</span>
+                                    </div>
+                                    <div class="radio-mark"></div>
+                                </div>
+                            </label>
+
+                            <label class="option-card radio-option">
+                                <input type="radio" name="spice" value="medium-spice" required>
+                                <div class="option-content">
+                                    <div class="option-emoji">🌶️🌶️</div>
+                                    <div class="option-text">
+                                        <strong>Little Kick (Medium)</strong>
+                                        <span>Some heat is nice</span>
+                                    </div>
+                                    <div class="radio-mark"></div>
+                                </div>
+                            </label>
+
+                            <label class="option-card radio-option">
+                                <input type="radio" name="spice" value="bring-heat" required>
+                                <div class="option-content">
+                                    <div class="option-emoji">🌶️🌶️🌶️</div>
+                                    <div class="option-text">
+                                        <strong>Bring the heat!</strong>
+                                        <span>I love it spicy</span>
+                                    </div>
+                                    <div class="radio-mark"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4: Dish Type Cravings -->
+                <div class="question-section" data-question="4">
+                    <div class="question-card">
+                        <div class="question-icon">🍽️</div>
+                        <h2 class="question-title">What are you craving right now?</h2>
+                        <p class="question-description">Select all the types of food that sound good (at least one)</p>
+                        
+                        <div class="options-grid">
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="craving" value="soup">
+                                <div class="option-content">
+                                    <div class="option-emoji">🍜</div>
+                                    <div class="option-text">
+                                        <strong>Noodle Soup</strong>
+                                        <span>Phở, Bún Bò, Hủ Tiếu</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="craving" value="dry">
+                                <div class="option-content">
+                                    <div class="option-emoji">🥖</div>
+                                    <div class="option-text">
+                                        <strong>Bánh Mì / Sandwich</strong>
+                                        <span>Quick, dry, bread</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="craving" value="rice">
+                                <div class="option-content">
+                                    <div class="option-emoji">🍚</div>
+                                    <div class="option-text">
+                                        <strong>Rice & Savory Dishes</strong>
+                                        <span>Cơm Tấm, main courses</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="craving" value="crispy">
+                                <div class="option-content">
+                                    <div class="option-emoji">🥞</div>
+                                    <div class="option-text">
+                                        <strong>Something Fried/Crispy</strong>
+                                        <span>Bánh Xèo, Spring Rolls</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="craving" value="dessert">
+                                <div class="option-content">
+                                    <div class="option-emoji">🍧</div>
+                                    <div class="option-text">
+                                        <strong>Sweet / Dessert</strong>
+                                        <span>Chè</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+
+                            <label class="option-card checkbox-option">
+                                <input type="checkbox" name="craving" value="craving-none">
+                                <div class="option-content">
+                                    <div class="option-emoji">😋</div>
+                                    <div class="option-text">
+                                        <strong>None, I eat everything!</strong>
+                                        <span>The "Foodie" option</span>
+                                    </div>
+                                    <div class="check-mark">✓</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="button-container">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeQuestion(-1)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeQuestion(1)">
+                        Next
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../assets/js/pages/food-survey.js"></script>
+</body>
+</html>
+

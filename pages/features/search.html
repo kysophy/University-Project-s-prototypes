@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm kiếm Nhà hàng - Culinary Compass</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #EA580C;
+            --primary-red: #DC2626;
+            --text-color: #333;
+            --text-light: #777;
+            --bg-color: #F8F8F8;
+            --card-bg: #FFFFFF;
+            --border-color: #E0E0E0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header */
+        .search-header {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            margin: -1rem -1rem 2rem -1rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #F3F4F6;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* Search Container */
+        .search-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-container h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #FFFFFF;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 16px rgba(234, 88, 12, 0.2);
+        }
+
+        .search-bar .material-icons-outlined {
+            color: var(--primary-color);
+            margin-right: 0.75rem;
+            font-size: 24px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: none;
+            width: 100%;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* Filters Container */
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            align-items: center;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .filter-select {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .filter-select:hover {
+            border-color: var(--primary-color);
+            background-color: #FFF7ED;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+        }
+
+        .toggle-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            border-radius: 50px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-filter:hover {
+            border-color: var(--primary-color);
+            background-color: #FFF7ED;
+        }
+
+        .toggle-filter label {
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .toggle-input {
+            cursor: pointer;
+        }
+
+        /* Results Container */
+        .results-container {
+            min-height: 400px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-count {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 4rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Restaurant Grid */
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Restaurant Card */
+        .restaurant-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .restaurant-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
+        }
+
+        .restaurant-info {
+            padding: 1.25rem;
+        }
+
+        .restaurant-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .restaurant-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .rating-stars {
+            color: #FFA500;
+            font-size: 1rem;
+        }
+
+        .rating-value {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .restaurant-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-icon {
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+
+        .restaurant-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            background: #FFF7ED;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-text {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .filters-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-select, .toggle-filter {
+                width: 100%;
+            }
+
+            .restaurant-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="search-header">
+        <div class="header-content">
+            <button class="back-button" onclick="goBack()">
+                <span class="material-icons-outlined">arrow_back</span>
+                <span>Quay lại</span>
+            </button>
+            <h1 class="header-title">Culinary Compass</h1>
+            <div class="nav-actions" id="navActions">
+                <!-- Will be populated by auth.js -->
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Search Section -->
+        <section class="search-container">
+            <h2>Tìm nhà hàng phù hợp với bạn</h2>
+            <div class="search-bar">
+                <span class="material-icons-outlined">search</span>
+                <input type="text" id="search-input" placeholder="Tìm kiếm theo tên món ăn hoặc nhà hàng...">
+            </div>
+        </section>
+
+        <!-- Filters Section -->
+        <section class="filters-container">
+            <select id="radius-select" class="filter-select">
+                <option value="10">📍 Bán kính 10km</option>
+                <option value="5">📍 Bán kính 5km</option>
+                <option value="2">📍 Bán kính 2km</option>
+                <option value="1">📍 Bán kính 1km</option>
+            </select>
+
+            <select id="price-select" class="filter-select">
+                <option value="">💰 Giá: Tất cả</option>
+                <option value="low">💰 Thấp (dưới 25k)</option>
+                <option value="mid">💰 Trung bình (25k-50k)</option>
+                <option value="high">💰 Cao (trên 50k)</option>
+            </select>
+
+            <select id="cuisine-select" class="filter-select">
+                <option value="">🍜 Ẩm thực: Tất cả</option>
+                <option value="Noodle">🍜 Phở / Bún / Hủ tiếu</option>
+                <option value="Rice">🍚 Cơm</option>
+                <option value="Sandwich">🥖 Bánh mì</option>
+                <option value="Pancake">🥞 Bánh xèo</option>
+                <option value="Appetizer">🍢 Món khai vị</option>
+                <option value="Dessert">🍰 Tráng miệng</option>
+            </select>
+
+            <select id="special-select" class="filter-select">
+                <option value="">⭐ Yêu cầu: Tất cả</option>
+                <option value="Popular">⭐ Phổ biến</option>
+                <option value="Vegan options">🌱 Có đồ chay</option>
+            </select>
+            
+            <div class="toggle-filter">
+                <input type="checkbox" id="open-now-toggle" class="toggle-input">
+                <label for="open-now-toggle">🕐 Đang mở cửa</label>
+            </div>
+
+            <select id="sort-by-select" class="filter-select">
+                <option value="distance">📏 Sắp xếp: Khoảng cách</option>
+                <option value="rating">⭐ Sắp xếp: Đánh giá</option>
+            </select>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-container">
+            <div class="results-header">
+                <div class="results-count" id="results-count"></div>
+            </div>
+            
+            <div id="loading-spinner" class="spinner"></div>
+            
+            <div id="restaurant-list" class="restaurant-grid">
+                <!-- Empty state -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <h3 class="empty-state-title">Bắt đầu tìm kiếm</h3>
+                    <p class="empty-state-text">Nhập tên món ăn hoặc nhà hàng để bắt đầu tìm kiếm</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth.js"></script>
+    <script>
+        // Back button
+        function goBack() {
+            window.history.back();
+        }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            const openNowToggle = document.getElementById('open-now-toggle');
+            const sortBySelect = document.getElementById('sort-by-select');
+            const radiusSelect = document.getElementById('radius-select');
+            const priceSelect = document.getElementById('price-select');
+            const cuisineSelect = document.getElementById('cuisine-select');
+            const specialSelect = document.getElementById('special-select');
+            const restaurantList = document.getElementById('restaurant-list');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const resultsCount = document.getElementById('results-count');
+            const emptyState = document.getElementById('empty-state');
+
+            // Flask API endpoint - change this if your Flask server runs on a different port
+            const API_URL = 'http://localhost:5000/api/search';
+
+            // Map URL dish parameter to search terms and cuisines
+            const dishMappings = {
+                'comtam': { searchTerm: 'Cơm Tấm', cuisine: 'Rice' },
+                'pho': { searchTerm: 'Phở', cuisine: 'Noodle' },
+                'banhmi': { searchTerm: 'Bánh Mì', cuisine: 'Sandwich' },
+                'banhxeo': { searchTerm: 'Bánh Xèo', cuisine: 'Pancake' },
+                'bunbo': { searchTerm: 'Bún Bò', cuisine: 'Noodle' },
+                'hutieunam': { searchTerm: 'Hủ Tiếu', cuisine: 'Noodle' }
+            };
+
+            // Read URL parameters and apply filters
+            function applyUrlFilters() {
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                // Handle dish parameter
+                const dish = urlParams.get('dish');
+                if (dish && dishMappings[dish]) {
+                    const mapping = dishMappings[dish];
+                    searchInput.value = mapping.searchTerm;
+                    
+                    // Also set the cuisine filter if available
+                    if (mapping.cuisine) {
+                        const cuisineOption = Array.from(cuisineSelect.options).find(
+                            opt => opt.value === mapping.cuisine
+                        );
+                        if (cuisineOption) {
+                            cuisineSelect.value = mapping.cuisine;
+                        }
+                    }
+                }
+
+                // Handle other optional parameters
+                const cuisine = urlParams.get('cuisine');
+                if (cuisine) {
+                    cuisineSelect.value = cuisine;
+                }
+
+                const price = urlParams.get('price');
+                if (price) {
+                    priceSelect.value = price;
+                }
+
+                const radius = urlParams.get('radius');
+                if (radius) {
+                    radiusSelect.value = radius;
+                }
+
+                const special = urlParams.get('special');
+                if (special) {
+                    specialSelect.value = special;
+                }
+
+                const openNow = urlParams.get('openNow');
+                if (openNow === 'true') {
+                    openNowToggle.checked = true;
+                }
+
+                const query = urlParams.get('q');
+                if (query) {
+                    searchInput.value = query;
+                }
+            }
+
+            // Apply URL filters before searching
+            applyUrlFilters();
+
+            // Auto-search on page load
+            searchRestaurants();
+
+            // Event listeners
+            searchInput.addEventListener('input', debounce(searchRestaurants, 500));
+            radiusSelect.addEventListener('change', searchRestaurants);
+            priceSelect.addEventListener('change', searchRestaurants);
+            cuisineSelect.addEventListener('change', searchRestaurants);
+            specialSelect.addEventListener('change', searchRestaurants);
+            openNowToggle.addEventListener('change', searchRestaurants);
+            sortBySelect.addEventListener('change', searchRestaurants);
+
+            // Debounce function to limit API calls
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Main search function
+            async function searchRestaurants() {
+                loadingSpinner.style.display = 'block';
+                restaurantList.innerHTML = '';
+                emptyState.style.display = 'none';
+                resultsCount.textContent = '';
+
+                const queryText = searchInput.value;
+                const isOpenNow = openNowToggle.checked;
+                const sortBy = sortBySelect.value;
+                const radius = radiusSelect.value;
+                const priceRange = priceSelect.value;
+                const cuisine = cuisineSelect.value;
+                const specialFlag = specialSelect.value;
+
+                // Default location: Ho Chi Minh City center
+                const userLatitude = 10.7725;
+                const userLongitude = 106.6980;
+
+                const searchParams = {
+                    queryText: queryText,
+                    openNow: isOpenNow,
+                    sortBy: sortBy,
+                    userLatitude: userLatitude,
+                    userLongitude: userLongitude,
+                    radiusKm: parseFloat(radius),
+                    priceRange: priceRange,
+                    cuisines: cuisine ? [cuisine] : [],
+                    specialFlags: specialFlag ? [specialFlag] : []
+                };
+
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(searchParams)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const restaurants = await response.json();
+                    loadingSpinner.style.display = 'none';
+
+                    if (restaurants.length === 0) {
+                        showEmptyResults();
+                    } else {
+                        renderRestaurants(restaurants);
+                    }
+
+                } catch (error) {
+                    loadingSpinner.style.display = 'none';
+                    console.error("Failed to fetch restaurants:", error);
+                    showError();
+                }
+            }
+
+            // Render restaurant cards
+            function renderRestaurants(restaurants) {
+                resultsCount.textContent = `Tìm thấy ${restaurants.length} nhà hàng`;
+                
+                restaurants.forEach(restaurant => {
+                    console.log('Restaurant:', restaurant.name, 'Image URL:', restaurant.image_url);
+                    const card = createRestaurantCard(restaurant);
+                    restaurantList.appendChild(card);
+                });
+            }
+
+            // Create restaurant card element
+            function createRestaurantCard(restaurant) {
+                const card = document.createElement('div');
+                card.className = 'restaurant-card';
+                
+                const stars = '★'.repeat(Math.floor(restaurant.rating)) + '☆'.repeat(5 - Math.floor(restaurant.rating));
+                
+                // Fix image URL path - convert to absolute path from page location
+                let imageUrl = restaurant.image_url || '../../assets/images/restaurants-img/comtam.png';
+                
+                // If path starts with ../../, it's already relative from pages/features/
+                // Keep it as is, browser will resolve it correctly
+                
+                card.innerHTML = `
+                    <img src="${imageUrl}" 
+                         alt="${restaurant.name}" 
+                         class="restaurant-image"
+                         onerror="this.onerror=null; this.style.background='linear-gradient(135deg, #FFF7ED, #FFEDD5)'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.removeAttribute('src'); this.innerHTML='<span style=\\'font-size: 3rem;\\'>🍜</span>';">
+                    <div class="restaurant-info">
+                        <h3 class="restaurant-name">${restaurant.name}</h3>
+                        <div class="restaurant-rating">
+                            <span class="rating-stars">${stars}</span>
+                            <span class="rating-value">${restaurant.rating.toFixed(1)}</span>
+                        </div>
+                        <div class="restaurant-details">
+                            <div class="detail-row">
+                                <span class="material-icons-outlined detail-icon">location_on</span>
+                                <span>${restaurant.distance_text}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="material-icons-outlined detail-icon">payments</span>
+                                <span>${restaurant.price_text}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="material-icons-outlined detail-icon">schedule</span>
+                                <span>${restaurant.openHours}</span>
+                            </div>
+                        </div>
+                        <div class="restaurant-tags">
+                            ${restaurant.cuisines.slice(0, 3).map(cuisine => 
+                                `<span class="tag">${cuisine}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                return card;
+            }
+
+            // Show empty results
+            function showEmptyResults() {
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <div class="empty-state-icon">😔</div>
+                    <h3 class="empty-state-title">Không tìm thấy kết quả</h3>
+                    <p class="empty-state-text">Thử điều chỉnh bộ lọc hoặc tìm kiếm khác</p>
+                `;
+                resultsCount.textContent = '';
+            }
+
+            // Show error message
+            function showError() {
+                restaurantList.innerHTML = `
+                    <div class="error-message">
+                        <p>❌ Không thể kết nối đến máy chủ</p>
+                        <p style="font-size: 0.9rem; margin-top: 1rem;">
+                            Vui lòng khởi động Flask server trước:<br>
+                            <code style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 4px;">python app.py</code>
+                        </p>
+                    </div>
+                `;
+                resultsCount.textContent = '';
+            }
+
+            // Make function globally accessible
+            window.searchRestaurants = searchRestaurants;
+        });
+    </script>
+</body>
+</html>
+

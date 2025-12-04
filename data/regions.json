@@ -1,0 +1,53 @@
+{
+  "regions": [
+    {
+      "id": "hanoi",
+      "name": "Hà Nội",
+      "nameEn": "Hanoi",
+      "description": "Thủ đô ngàn năm văn hiến với ẩm thực đậm đà truyền thống miền Bắc",
+      "image": "assets/images/regions/hanoi.jpg",
+      "specialties": ["Phở", "Bún chả", "Chả cá Lã Vọng"],
+      "coordinates": {
+        "lat": 21.0285,
+        "lng": 105.8542
+      }
+    },
+    {
+      "id": "saigon",
+      "name": "TP. Hồ Chí Minh",
+      "nameEn": "Ho Chi Minh City",
+      "description": "Thành phố sôi động với ẩm thực đa dạng và phong phú miền Nam",
+      "image": "assets/images/regions/hcmc.jpg",
+      "specialties": ["Bánh mì", "Hủ tiếu", "Cơm tấm"],
+      "coordinates": {
+        "lat": 10.8231,
+        "lng": 106.6297
+      }
+    },
+    {
+      "id": "danang",
+      "name": "Đà Nẵng",
+      "nameEn": "Da Nang",
+      "description": "Thành phố biển với hải sản tươi ngon và món ăn miền Trung độc đáo",
+      "image": "assets/images/regions/danang.jpg",
+      "specialties": ["Mì Quảng", "Bún chả cá", "Bánh tráng cuốn thịt heo"],
+      "coordinates": {
+        "lat": 16.0544,
+        "lng": 108.2022
+      }
+    },
+    {
+      "id": "hue",
+      "name": "Huế",
+      "nameEn": "Hue",
+      "description": "Cố đô với ẩm thực cung đình tinh tế và hương vị đặc trưng",
+      "image": "assets/images/regions/hue.jpg",
+      "specialties": ["Bún bò Huế", "Bánh bèo", "Cơm hến"],
+      "coordinates": {
+        "lat": 16.4637,
+        "lng": 107.5909
+      }
+    }
+  ]
+}
+

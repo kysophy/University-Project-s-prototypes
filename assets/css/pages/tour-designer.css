@@ -1,0 +1,700 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    position: absolute;
+    top: 0px;
+    left: -1px;
+    z-index: 1100;
+    width: 100%;
+    color: #222;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 20px 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.header p {
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.back-home-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #EA580C, #DC2626);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+.back-home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.3);
+}
+
+.container {
+    position: absolute;
+    top: 15px;
+    left: -1px;
+    width: 350px;
+    z-index: 1000;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.sidebar {
+    position: absolute;
+    top: 80px;
+    left: -1px;
+    width: 100%;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.sonhahang {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    color: #222;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 10px 30px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.card-wrapper {
+  margin-top: 50px;
+}
+
+.card-wrapper-restaurantcard {
+    margin-top: 170px;
+}
+
+.searchsession {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.search-input {
+    flex: 1;
+    width: 100%;
+    max-width: 300px;
+    margin-left: 2px;
+    padding: 12px 16px;
+    border: none;
+    font-size: 16px;
+    background-color: #faf8f8;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.description {
+    margin-left: 8px;
+    font-size: 15px;
+    color: #666;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.restaurant-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    cursor: pointer;
+}
+.restaurant-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-header h3 {
+    font-size: 1rem;
+    margin: 0;
+}
+.tag {
+    background: #eef3ff;
+    color: #3056d3;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+.rating {
+    color: #f4b400;
+    font-weight: 500;
+    margin: 6px 0;
+}
+.address {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.tags span {
+    background: #f2f2f2;
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-right: 6px;
+    font-size: 0.8rem;
+    color: #333;
+}
+
+button {
+    margin-top: 8px;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background: #0078ff;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+button:hover {
+    background: #005fcc;
+}
+
+.marker-description {
+    position: absolute;
+    height: 150px;
+    width: 150px;
+    right: 20px;
+    top: 100px;
+    z-index: 1050;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: right 0.3s ease, transform 0.3s ease;
+    transform: translateX(0);
+}
+
+.marker-description h3 {
+    margin: 0 0 16px 0;
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: #222;
+}
+
+body:has(.detail-panel.show) .marker-description {
+    right: 400px;
+}
+
+.key-list {
+    margin-top: -8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.key-icon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.key-icon div {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.key-icon .red {
+    background: #ff4444;
+}
+
+.key-icon .blue {
+    background: #0078ff;
+}
+
+.key-icon .green {
+    background: #28a745;
+}
+
+.key-icon .yellow {
+    background: #ffc107;
+    border: 1px solid #ffb300;
+}
+
+.key-text {
+    font-size: 0.8rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.route-container {
+    position: absolute;
+    height: auto;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    overflow-y: auto;
+    left: 355px;
+    bottom: 0px;
+    z-index: 1050;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 14px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.route-list {
+    display: flex;
+    flex-direction: column; 
+    gap: 8px;
+}
+
+.route-item {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    gap: 10px;
+}
+
+.route-number {
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
+    flex-shrink: 0;
+    background-color: #22c55e;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.route-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.route-info h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
+}
+
+.detail-panel {
+    position: fixed;
+    right: -450px;
+    top: 80px;
+    width: 400px;
+    height: 100vh;
+    background: white;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+    z-index: 1001;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+}
+
+.detail-panel.show {
+    right: 0;
+}
+
+.close-detail {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+}
+
+.close-detail:hover {
+    background: rgb(255, 255, 255);
+}
+
+.restaurant-header {
+    top: 80px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.restaurant-name {
+    flex: 1;
+}
+
+.restaurant-name h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 6px;
+}
+
+.rating-category {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #666;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.star {
+    color: #FFC107;
+    font-size: 16px;
+}
+
+.rating-value {
+    font-weight: 600;
+    color: #000;
+}
+
+.separator {
+    color: #ffffff;
+}
+
+.status-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.status-open {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-hours {
+    color: #666;
+}
+
+.status-price {
+    color: #666;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-directions {
+    background: #000;
+    color: white;
+}
+
+.btn-directions:hover {
+    background: #333;
+}
+
+.btn-call {
+    background: #f5f5f5;
+    color: #000;
+    border: 1px solid #e0e0e0;
+}
+
+.btn-call:hover {
+    background: #ebebeb;
+}
+
+.btn-reservation {
+    background: #f5f5f5;
+    color: #000;
+    border: 1px solid #e0e0e0;
+}
+
+.btn-reservation:hover {
+    background: #ebebeb;
+}
+
+.btn-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.detail-images {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.detail-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+}
+
+.detail-content {
+    padding: 20px;
+}
+
+.detail-content h2 {
+    font-size: 24px;
+    margin: 0 0 12px 0;
+    color: #000;
+}
+
+.detail-rating {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.category {
+    background: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #666;
+}
+
+.detail-tabs {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.general-info {
+    background: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #000000;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    color: #0078ff;
+    border-bottom-color: #0078ff;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.info-item {
+    display: flex;
+    gap: 8px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item .icon {
+    font-size: 20px;
+}
+
+.info-label {
+    font-size: 13px;
+    color: #666;
+    margin: 0 0 4px 0;
+}
+
+.info-value {
+    font-size: 15px;
+    color: #000;
+    margin: 0;
+    font-weight: 500;
+}
+
+.buttons-in-route {
+    display: none;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    z-index: 1000;
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.buttons-in-route.show {
+    display: flex;
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.btnRt {
+    padding: 12px 28px;
+    border-radius: 24px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btnRt.deleteAll {
+    background: white;
+    color: #333;
+    border: 1px solid #e0e0e0;
+}
+
+.btnRt.deleteAll:hover {
+    background: #f8f8f8;
+    border-color: #d0d0d0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btnRt.confirm {
+    background: linear-gradient(135deg, #EA580C, #DC2626);
+    color: white;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.btnRt.confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+}
+
+.btnRt:active {
+    transform: translateY(0);
+}
+

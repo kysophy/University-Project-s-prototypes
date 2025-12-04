@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Designer - Culinary Discovery</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <link rel="stylesheet" href="../../assets/css/pages/tour-designer.css">
+
+</head>
+
+<body>
+    <div class="header">
+        <h2>Culinary Tour Designer</h2>
+        <p>Create your own food discovery journey</p>
+        <button class="back-home-btn" onclick="window.location.href='../../index.html'">
+            ← Back to Home
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="sonhahang">
+                <h3> Restaurants </h3>
+                <p id="restaurant-count">0 restaurants</p>
+            </div>
+            <div class="card-wrapper"> </div>
+            <div class="searchsession">
+                <input type="text" class="search-input" placeholder="Search for food (e.g., Phở, Bánh Mì)...">
+                <p class="description">Search by restaurant name, food, or address</p>
+            </div>
+            <div class="card-wrapper-restaurantcard"> </div>
+            <div class="restaurant">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="route-container">
+        <h4> Your Route </h4>
+        <div class="route-list">
+
+        </div>
+    </div>
+
+    <div class="restaurant-info">
+        <div class="top">
+            
+        </div>
+        <div class="mid">
+            
+        </div>
+        <div class="bottom">
+
+        </div>
+    </div>
+
+    <div class="buttons-in-route">
+        <button class="btnRt deleteAll">
+            Clear All
+        </button>
+        <button class="btnRt confirm">
+            Start Tour
+        </button>
+    </div>
+
+    <div class="marker-description">
+        <h3> Legend</h3>
+        <div class="key-list">
+            <div class="key-icon">
+                <div class="red"></div>
+                <span class="key-text"> Restaurant </span>
+            </div>
+            <div class="key-icon">
+                <div class="blue"></div>
+                <span class="key-text"> Selected </span>
+            </div>
+            <div class="key-icon">
+                <div class="green"></div>
+                <span class="key-text"> In Route </span>
+            </div>
+            <div class="key-icon">
+                <div class="yellow"></div>
+                <span class="key-text"> Your Location </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+    <script src="../../assets/js/pages/tour-designer.js"></script>
+</body>
+</html>
