@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
         top: 20px;
         left: 20px;
         padding: 12px 20px;
-        background-color: #ffffff;
-        color: #333;
+        background: linear-gradient(135deg, #EA580C, #DC2626);
+        color: white;
         border: none;
         border-radius: 8px;
         font-size: 16px;
@@ -103,8 +103,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(res => res.json())
                     .then(data => {
                         console.log('Restaurant removed from route:', data);
+
+                        recordVisitedStop(restaurant);
                         
-                        alert(`Bạn đã đến ${restaurant.name}!`);
+                        alert(`You have arrived at ${restaurant.name}!`);
                         
                         navigationInRoute();
                     })
@@ -215,6 +217,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(res => res.json())
         .then(data => {
             console.log('Restaurant removed from route:', data);
+
+            if(currentRestaurant) recordVisitedStop(currentRestaurant);
             
             // Reload the route
             navigationInRoute();
@@ -238,13 +242,15 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             console.log('Route data received:', data);
             
+            // Clear markers
             restaurantMarkers.forEach(m => map.removeLayer(m));
             restaurantMarkers = [];
             
-            routeRestaurants = [];
-            
+            // ---------------------------------------------------------
+            // 1. CHECK IF TOUR IS FINISHED (Empty Route)
+            // ---------------------------------------------------------
             if (!data.route || data.route.length === 0) {
-                console.log('No restaurants in route');
+                console.log('No restaurants in route - Tour Finished.');
                 currentRestaurant = null;
                 updateArrivalButton();
 
@@ -253,14 +259,52 @@ document.addEventListener('DOMContentLoaded', function () {
                     window.currentRoute = null;
                 }
                 
-                alert('Tour completed! Thank you for participating.');
-                setTimeout(() => {
-                    window.location.href = 'tour-designer.html';
-                }, 2000);
+                // --- Force a user so History Page can see the data ---
+                let currentUser = localStorage.getItem('currentUser');
+                if (!currentUser) {
+                    currentUser = 'Traveler'; 
+                    localStorage.setItem('currentUser', currentUser);
+                }
+
+                // Retrieve stops from session
+                const visitedStops = JSON.parse(sessionStorage.getItem('current_tour_stops')) || [];
+
+                // --- SAVE LOGIC ---
+                if (visitedStops.length > 0) {
+                    const historyKey = `tour_history_${currentUser}`;
+                    const history = JSON.parse(localStorage.getItem(historyKey)) || [];
+                    
+                    const newTour = {
+                        id: Date.now(),
+                        name: `Food Tour ${new Date().toLocaleDateString('vi-VN')}`,
+                        date: new Date().toISOString(),
+                        status: 'completed',
+                        stops: visitedStops,
+                        duration: 'Flexible',
+                        distance: 'Unknown'
+                    };
+                    
+                    history.unshift(newTour);
+                    localStorage.setItem(historyKey, JSON.stringify(history));
+                    
+                    // Clear session to prevent duplicate saves
+                    sessionStorage.removeItem('current_tour_stops');
+
+                    // --- SUCCESS MESSAGE RESTORED HERE ---
+                    alert('Tour completed! Thank you for participating.');
+                } 
                 
+                // Redirect
+                setTimeout(() => {
+                    window.location.href = '../tour-history.html'; 
+                }, 500);
+            
                 return;
             }
-            
+
+            // ---------------------------------------------------------
+            // 2. NORMAL NAVIGATION LOGIC (Route not empty)
+            // ---------------------------------------------------------
             routeRestaurants = data.route;
             
             data.route.forEach((restaurant, index) => {
@@ -277,12 +321,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
             
-            // Clear existing route
+            // Draw Routing Line
             if (window.currentRoute) {
                 map.removeControl(window.currentRoute);
             }
 
-            // Get the FIRST restaurant in the route (next destination)
             const firstRestaurant = routeRestaurants[0];
             currentRestaurant = firstRestaurant;
             
@@ -302,8 +345,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             serviceUrl: 'https://router.project-osrm.org/route/v1'
                         })
                     }).addTo(map);
-                    
-                    console.log(`Route created to: ${firstRestaurant.name} (${routeRestaurants.length} restaurants remaining)`);
                 }
             }
             
@@ -311,10 +352,21 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => {
             console.error('Error fetching route:', error);
-            alert('Cannot load route. Please try again.');
         });
     }
 
-
+    // Helper to remember stops in Session Storage (Temporary memory)
+    function recordVisitedStop(restaurant) {
+        let visited = JSON.parse(sessionStorage.getItem('current_tour_stops')) || [];
+        
+        // Check if already added to avoid duplicates
+        if (!visited.find(r => r.id === restaurant.id)) {
+            visited.push({
+                name: restaurant.name,
+                dish: restaurant.tags ? (Array.isArray(restaurant.tags) ? restaurant.tags[0] : restaurant.tags) : 'Món ngon',
+                rating: restaurant.rating
+            });
+            sessionStorage.setItem('current_tour_stops', JSON.stringify(visited));
+        }
+    }
 });
-

@@ -20,34 +20,127 @@ const totalDishesEl = document.getElementById('total-dishes');
 const totalDistanceEl = document.getElementById('total-distance');
 
 // Initialize page
-document.addEventListener('DOMContentLoaded', () => {
-    // Check authentication
-    if (!isAuthenticated()) {
-        window.location.href = '../pages/signin.html';
-        return;
-    }
-
+document.addEventListener('DOMContentLoaded', function () {
     loadTourHistory();
-    updateStatistics();
 });
+
+// Go back to previous page or home
+function goBack() {
+    // Try to use stored referrer for this specific page
+    const referrer = sessionStorage.getItem('previousPage');
+    if (referrer && referrer !== window.location.href) {
+        window.location.href = referrer;
+    } else {
+        // Fallback to browser back button
+        window.history.back();
+    }
+}
 
 // Load tour history from localStorage
 function loadTourHistory() {
-    const currentUser = getCurrentUser();
-    if (!currentUser) {
-        showEmptyState();
+    // 1. MATCH THE KEY LOGIC FROM NAVIGATION
+    // We use the same fallback 'Traveler' so it finds the data you just saved
+    const currentUser = localStorage.getItem('currentUser') || 'Traveler';
+    const historyKey = `tour_history_${currentUser}`;
+    
+    console.log("Loading history for user:", currentUser);
+    console.log("Reading key:", historyKey);
+
+    const tours = JSON.parse(localStorage.getItem(historyKey)) || [];
+    const container = document.getElementById('tours-container');
+    const emptyState = document.getElementById('empty-state');
+
+    // 2. TOGGLE EMPTY STATE
+    if (tours.length === 0) {
+        container.style.display = 'none';
+        emptyState.style.display = 'block';
+        updateStats([], 0, 0, 0); // Reset stats
         return;
     }
 
-    // Get tour history from localStorage
-    const userTours = JSON.parse(localStorage.getItem(`tour_history_${currentUser.username}`)) || [];
-    tourHistory = userTours;
+    container.style.display = 'flex';
+    emptyState.style.display = 'none';
 
-    if (tourHistory.length === 0) {
-        showEmptyState();
-    } else {
-        displayTours();
-    }
+    // 3. CALCULATE STATS
+    let totalRestaurants = 0;
+    let totalDishes = 0;
+    
+    // 4. RENDER TOURS
+    container.innerHTML = ''; // Clear current list
+    
+    tours.forEach(tour => {
+        // Update stats
+        totalRestaurants += tour.stops.length;
+        totalDishes += tour.stops.length; // Assuming 1 dish per stop for now
+
+        // Create HTML for Tour Card
+        const card = document.createElement('div');
+        card.className = 'tour-card';
+        
+        // Format Date
+        const dateObj = new Date(tour.date);
+        const dateStr = dateObj.toLocaleDateString('en-US', { 
+            year: 'numeric', month: 'short', day: 'numeric' 
+        });
+
+        // Generate HTML for stops
+        let stopsHtml = '';
+        tour.stops.forEach((stop, index) => {
+            stopsHtml += `
+                <div class="tour-stop">
+                    <div class="stop-number">${index + 1}</div>
+                    <div class="stop-details">
+                        <div class="stop-name">${stop.name}</div>
+                        <div class="stop-dish">Tried: ${stop.dish || 'Specialty'}</div>
+                        <div class="stop-rating">
+                            <span>★</span> ${stop.rating || 'N/A'}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        card.innerHTML = `
+            <div class="tour-header">
+                <div class="tour-info">
+                    <h3>${tour.name}</h3>
+                    <div class="tour-date">
+                        <span>📅</span> ${dateStr}
+                    </div>
+                </div>
+                <div class="tour-status ${tour.status}">
+                    ${tour.status.charAt(0).toUpperCase() + tour.status.slice(1)}
+                </div>
+            </div>
+            
+            <div class="tour-body">
+                <div class="tour-stops">
+                    ${stopsHtml}
+                </div>
+                
+                <div class="tour-footer">
+                    <div class="tour-stats">
+                        <div class="tour-stat">
+                            <strong>${tour.stops.length}</strong> Stops
+                        </div>
+                        <div class="tour-stat">
+                            <strong>${tour.duration || 'Flexible'}</strong> Duration
+                        </div>
+                    </div>
+                    <div class="tour-actions">
+                        <button class="btn-action-tour" onclick="deleteTour(${tour.id})">
+                            🗑 Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+
+    // Update the numbers at the top of the page
+    updateStats(tours.length, totalRestaurants, totalDishes);
 }
 
 // Display tours
@@ -85,9 +178,9 @@ function displayTours() {
 // Create tour card HTML
 function createTourCard(tour) {
     const statusLabels = {
-        'completed': 'Đã hoàn thành',
-        'in-progress': 'Đang thực hiện',
-        'cancelled': 'Đã hủy'
+        'completed': 'Completed',
+        'in-progress': 'In Progress',
+        'cancelled': 'Cancelled'
     };
 
     const stopsHTML = tour.stops.map((stop, index) => `
@@ -134,7 +227,7 @@ function createTourCard(tour) {
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                             </svg>
-                            <span><strong>${tour.stops.length}</strong> điểm</span>
+                            <span><strong>${tour.stops.length}</strong> stops</span>
                         </div>
                         <div class="tour-stat">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -157,20 +250,20 @@ function createTourCard(tour) {
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                             </svg>
-                            Lặp lại
+                            Repeat
                         </button>
                         ` : ''}
                         <button class="btn-action-tour" onclick="shareTour(${tour.id})">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
                             </svg>
-                            Chia sẻ
+                            Share
                         </button>
                         <button class="btn-action-tour" onclick="deleteTour(${tour.id})">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
-                            Xóa
+                            Delete
                         </button>
                     </div>
                 </div>
@@ -180,16 +273,12 @@ function createTourCard(tour) {
 }
 
 // Update statistics
-function updateStatistics() {
-    const totalTours = tourHistory.length;
-    const totalRestaurants = new Set(tourHistory.flatMap(tour => tour.stops.map(s => s.name))).size;
-    const totalDishes = tourHistory.reduce((sum, tour) => sum + tour.stops.length, 0);
-    const totalDistance = tourHistory.reduce((sum, tour) => sum + parseFloat(tour.distance), 0).toFixed(1);
-
-    totalToursEl.textContent = totalTours;
-    totalRestaurantsEl.textContent = totalRestaurants;
-    totalDishesEl.textContent = totalDishes;
-    totalDistanceEl.textContent = `${totalDistance} km`;
+function updateStats(count, restaurants, dishes) {
+    document.getElementById('total-tours').textContent = count;
+    document.getElementById('total-restaurants').textContent = restaurants;
+    document.getElementById('total-dishes').textContent = dishes;
+    // Distance is hard to calculate without GPS track data, setting to random or 0
+    document.getElementById('total-distance').textContent = (restaurants * 1.5).toFixed(1) + " km";
 }
 
 // Filter tours
@@ -209,7 +298,7 @@ function repeatTour(tourId) {
     const tour = tourHistory.find(t => t.id === tourId);
     if (!tour) return;
 
-    if (confirm(`Bạn muốn lặp lại tour "${tour.name}"?\n\nTour này sẽ được tạo lại với các điểm dừng tương tự.`)) {
+    if (confirm(`Do you want to repeat tour "${tour.name}"?\n\nThis tour will be recreated with the same stops.`)) {
         // Store tour data and redirect to tour designer
         localStorage.setItem('repeat_tour_data', JSON.stringify(tour));
         window.location.href = 'features/tour-designer.html';
@@ -221,7 +310,7 @@ function shareTour(tourId) {
     const tour = tourHistory.find(t => t.id === tourId);
     if (!tour) return;
 
-    const shareText = `🍜 Tour: ${tour.name}\n📍 ${tour.stops.length} điểm dừng\n⏱️ ${tour.duration}\n\nKhám phá trên Culinary Compass Vietnam!`;
+    const shareText = `🍜 Tour: ${tour.name}\n📍 ${tour.stops.length} stops\n⏱️ ${tour.duration}\n\nExplore on Culinary Compass Vietnam!`;
 
     if (navigator.share) {
         navigator.share({
@@ -232,48 +321,44 @@ function shareTour(tourId) {
     } else {
         // Fallback: Copy to clipboard
         navigator.clipboard.writeText(shareText).then(() => {
-            showNotification('Đã sao chép thông tin tour!', 'success');
+            showNotification('Tour information copied!', 'success');
         });
     }
 }
 
 // Delete tour
 function deleteTour(tourId) {
-    if (!confirm('Bạn có chắc muốn xóa tour này khỏi lịch sử?')) {
-        return;
-    }
+    if(!confirm("Are you sure you want to delete this history record?")) return;
 
-    const currentUser = getCurrentUser();
-    if (!currentUser) return;
+    const currentUser = localStorage.getItem('currentUser') || 'Traveler';
+    const historyKey = `tour_history_${currentUser}`;
+    let tours = JSON.parse(localStorage.getItem(historyKey)) || [];
 
-    // Remove from tourHistory array
-    tourHistory = tourHistory.filter(tour => tour.id !== tourId);
+    // Filter out the deleted tour
+    tours = tours.filter(t => t.id !== tourId);
 
-    // Update localStorage
-    localStorage.setItem(`tour_history_${currentUser.username}`, JSON.stringify(tourHistory));
+    // Save back to local storage
+    localStorage.setItem(historyKey, JSON.stringify(tours));
 
-    // Refresh display
+    // Reload page to see changes
     loadTourHistory();
-    updateStatistics();
-
-    showNotification('Đã xóa tour!', 'success');
 }
 
 // Export history
 function exportHistory() {
     if (tourHistory.length === 0) {
-        showNotification('Không có dữ liệu để xuất!', 'info');
+        showNotification('No data to export!', 'info');
         return;
     }
 
     // Create CSV content
-    let csvContent = 'Tên Tour,Ngày,Trạng thái,Số điểm,Thời gian,Khoảng cách\n';
+    let csvContent = 'Tour Name,Date,Status,Stops,Duration,Distance\n';
     
     tourHistory.forEach(tour => {
         const statusLabels = {
-            'completed': 'Đã hoàn thành',
-            'in-progress': 'Đang thực hiện',
-            'cancelled': 'Đã hủy'
+            'completed': 'Completed',
+            'in-progress': 'In Progress',
+            'cancelled': 'Cancelled'
         };
         
         csvContent += `"${tour.name}",${formatDate(tour.date)},${statusLabels[tour.status]},${tour.stops.length},${tour.duration},${tour.distance} km\n`;
@@ -292,7 +377,7 @@ function exportHistory() {
     link.click();
     document.body.removeChild(link);
 
-    showNotification('Đã xuất báo cáo thành công!', 'success');
+    showNotification('Report exported successfully!', 'success');
 }
 
 // Show empty state
@@ -342,7 +427,9 @@ function showNotification(message, type = 'success') {
 
 // Helper: Check if user is authenticated
 function isAuthenticated() {
-    return localStorage.getItem('isLoggedIn') === 'true';
+    const token = localStorage.getItem('accessToken');
+    const currentUser = localStorage.getItem('currentUser');
+    return token !== null && currentUser !== null;
 }
 
 // Helper: Get current user
@@ -356,11 +443,8 @@ function getCurrentUser() {
 
 // Handle logout
 function handleLogout() {
-    if (confirm('Bạn có chắc muốn đăng xuất?')) {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('currentUser');
-        window.location.href = '../index.html';
-    }
+    localStorage.removeItem('currentUser');
+    window.location.href = '../index.html';
 }
 
 // Initialize sample tour history if none exists (for demo purposes)

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Tour TP. Hồ Chí Minh</title>
+    <title>Food Tour Ho Chi Minh City</title>
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="../../assets/css/pages/region.css">
+    <link rel="stylesheet" href="../../assets/css/chatbot.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,9 +24,9 @@
                     </svg>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#content">Nội dung</a></li>
-                    <li><a href="#stories">Câu chuyện Ẩm thực</a></li>
-                    <li><a href="#about">Về chúng tôi</a></li>
+                    <li><a href="#content">Content</a></li>
+                    <li><a href="#stories">Culinary Stories</a></li>
+                    <li><a href="#about">About Us</a></li>
                 </ul>
                 <div class="nav-actions" id="navActions">
                     </div>
@@ -41,7 +42,7 @@
                     <span class="food-text">FOOD</span> 
                     <span class="tour-text">TOUR</span>
                 </h1>
-                <p class="hero-subtitle">tại Thành phố Hồ Chí Minh ❤️</p>
+                <p class="hero-subtitle">in Ho Chi Minh City ❤️</p>
                 
                 <div class="feature-cards-container">
                     <div class="feature-card-large" onclick="window.location.href='../features/food-survey.html'">
@@ -50,19 +51,19 @@
                             <div class="feature-card-overlay"></div>
                         </div>
                         <div class="feature-card-content">
-                            <h3 class="feature-card-title">Khám phá Tour</h3>
-                            <p class="feature-card-description">Khám phá các tour ẩm thực được thiết kế bởi chuyên gia. Trải nghiệm hành trình qua những hương vị tuyệt nhất Sài Gòn.</p>
+                            <h3 class="feature-card-title">Explore Tours</h3>
+                            <p class="feature-card-description">Discover culinary tours designed by experts. Experience a journey through the best flavors of Saigon.</p>
                         </div>
                     </div>
                     
-                    <div class="feature-card-large" onclick="window.location.href='../features/tour-designer.html'">
+                    <div class="feature-card-large" onclick="window.location.href='../features/tour-designer.html?region=hcmc'">
                         <div class="feature-card-image">
                             <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600" alt="Design Your Tour">
                             <div class="feature-card-overlay"></div>
                         </div>
                         <div class="feature-card-content">
-                            <h3 class="feature-card-title">Tự thiết kế Tour</h3>
-                            <p class="feature-card-description">Tự tạo lộ trình ẩm thực của riêng bạn. Chọn sở thích và để chúng tôi tạo nên một chuyến đi độc đáo dành riêng cho bạn.</p>
+                            <h3 class="feature-card-title">Design Your Tour</h3>
+                            <p class="feature-card-description">Create your own culinary itinerary. Choose your preferences and let us create a unique journey just for you.</p>
                         </div>
                     </div>
                 </div>
@@ -72,65 +73,65 @@
 
     <section id="stories" class="culinary-stories-section">
         <div class="stories-header">
-            <h2 class="stories-title">CÂU CHUYỆN ẨM THỰC</h2>
-            <p class="stories-subtitle">Khám phá Lịch sử, Hương vị & Sự biến tấu của các món ăn biểu tượng Sài Gòn</p>
+            <h2 class="stories-title">CULINARY STORIES</h2>
+            <p class="stories-subtitle">Discover the History, Flavors & Variations of Saigon's Iconic Dishes</p>
         </div>
 
         <div class="stories-scroll-container" id="storiesContainer">
             <div class="story-slide" data-index="0">
                 <div class="story-row">
                     <div class="story-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1569058242567-93de6f36f8eb?w=800" alt="Cơm Tấm - Broken Rice" class="story-image">
+                        <img src="../../assets/images/dishes/Cơm_tấm.jpg" alt="Cơm Tấm - Broken Rice" class="story-image">
                         <div class="story-image-overlay">
                             <span class="story-badge spotlight">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
                                 </svg>
-                                Tiêu điểm Món ăn
+                                Dish Spotlight
                             </span>
                         </div>
                     </div>
                     <div class="story-content">
                         <div class="story-content-inner">
                             <h3 class="story-dish-name">Cơm Tấm</h3>
-                            <p class="story-dish-tagline">Món ăn "anh hùng" của tầng lớp lao động Sài Gòn</p>
+                            <p class="story-dish-tagline">The "hero" dish of Saigon's working class</p>
                             
                             <div class="story-section">
                                 <h4 class="story-section-title">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    Nguồn gốc
+                                    Origin
                                 </h4>
-                                <p class="story-text">Cơm tấm có nguồn gốc khiêm tốn từ đầu thế kỷ 20. Vào thời Pháp thuộc, đây là loại gạo "lỗi" giá rẻ (hạt gạo bị vỡ khi xay xát). Những người bán hàng rong sáng tạo ở Sài Gòn đã biến những hạt gạo không hoàn hảo này thành món ăn dân dã tuyệt vời. Từ một món ăn cho tầng lớp lao động, Cơm Tấm nay đã trở thành một trong những món ăn được yêu thích nhất Việt Nam.</p>
+                                <p class="story-text">Cơm Tấm has humble origins dating back to the early 20th century. During the French colonial period, this was cheap "broken" rice (grains that broke during milling). Creative street vendors in Saigon transformed these imperfect grains into an amazing everyday dish. From a meal for the working class, Cơm Tấm has now become one of Vietnam's most beloved dishes.</p>
                             </div>
 
                             <div class="story-section">
                                 <h4 class="story-section-title">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                                    Các biến tấu phổ biến
+                                    Popular Variations
                                 </h4>
                                 <div class="story-variations">
                                     <div class="variation-item">
                                         <span class="variation-name">Sườn Nướng</span>
-                                        <span class="variation-desc">Sườn cốt lết heo nướng than với sốt ướp sả mật ong cháy cạnh</span>
+                                        <span class="variation-desc">Grilled pork ribs with charred lemongrass honey marinade</span>
                                     </div>
                                     <div class="variation-item">
                                         <span class="variation-name">Bì Chả</span>
-                                        <span class="variation-desc">Da heo thái sợi trộn thính gạo rang + chả trứng hấp thịt</span>
+                                        <span class="variation-desc">Shredded pork skin mixed with toasted rice powder + steamed pork egg roll</span>
                                     </div>
                                     <div class="variation-item">
                                         <span class="variation-name">Trứng Ốp La</span>
-                                        <span class="variation-desc">Trứng chiên lòng đào với viền giòn rụm</span>
+                                        <span class="variation-desc">Sunny-side-up egg with crispy edges</span>
                                     </div>
                                     <div class="variation-item">
                                         <span class="variation-name">Đặc Biệt</span>
-                                        <span class="variation-desc">Combo "Sườn Bì Chả Trứng" đầy đủ cho người sành ăn</span>
+                                        <span class="variation-desc">Full combo "Sườn Bì Chả Trứng" for food connoisseurs</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="story-action">
                                 <a href="../features/search.html?dish=comtam" class="story-cta">
-                                    <span>Tìm quán Cơm Tấm</span>
+                                    <span>Find Cơm Tấm Restaurants</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                 </a>
                             </div>
@@ -142,51 +143,51 @@
             <div class="story-slide" data-index="1">
                 <div class="story-row reverse">
                     <div class="story-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800" alt="Phở - Vietnamese Noodle Soup" class="story-image">
+                        <img src="../../assets/images/dishes/Phở.png" alt="Phở - Vietnamese Noodle Soup" class="story-image">
                         <div class="story-image-overlay">
                             <span class="story-badge comparison">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                                So sánh vùng miền
+                                Regional Comparison
                             </span>
                         </div>
                     </div>
                     <div class="story-content">
                         <div class="story-content-inner">
                             <h3 class="story-dish-name">Phở</h3>
-                            <p class="story-dish-tagline">Quốc hồn Quốc túy: Bắc vs. Nam</p>
+                            <p class="story-dish-tagline">National Soul Food: North vs. South</p>
                             
                             <div class="story-section">
                                 <h4 class="story-section-title">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    Hương vị thế kỷ
+                                    A Century of Flavor
                                 </h4>
-                                <p class="story-text">Ra đời đầu những năm 1900 tại Nam Định, Phở là món ăn nổi tiếng nhất Việt Nam. Món ăn là sự kết hợp giữa kỹ thuật hầm xương của Pháp và hương vị Á Đông. Sau năm 1954, khi người miền Bắc di cư vào Nam, món Phở đã biến đổi mạnh mẽ để phù hợp với khẩu vị địa phương, tạo nên hai phong cách riêng biệt mà những người yêu ẩm thực vẫn tranh luận sôi nổi.</p>
+                                <p class="story-text">Born in the early 1900s in Nam Định, Phở is Vietnam's most famous dish. The dish combines French bone-braising techniques with Eastern flavors. After 1954, when Northerners migrated south, Phở transformed dramatically to suit local tastes, creating two distinct styles that food lovers still passionately debate.</p>
                             </div>
 
                             <div class="story-section">
                                 <h4 class="story-section-title">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                                    Bắc vs. Nam: Cuộc tranh luận thú vị
+                                    North vs. South: The Great Debate
                                 </h4>
                                 <div class="story-comparison">
                                     <div class="comparison-column north">
-                                        <h5>Phở Bắc (Truyền thống)</h5>
+                                        <h5>Phở Bắc (Traditional)</h5>
                                         <ul>
-                                            <li>Nước dùng trong, thanh tao</li>
-                                            <li>Ít rau thơm - chủ yếu là hành lá & ngò</li>
-                                            <li>Bánh phở to và dẹt hơn</li>
-                                            <li>Không dùng tương đen hay tương ớt</li>
-                                            <li>Ăn kèm với quẩy giòn</li>
+                                            <li>Clear, elegant broth</li>
+                                            <li>Few herbs - mainly scallions & cilantro</li>
+                                            <li>Wider, flatter noodles</li>
+                                            <li>No black sauce or chili sauce</li>
+                                            <li>Served with crispy fried dough sticks (quẩy)</li>
                                         </ul>
                                     </div>
                                     <div class="comparison-column south">
-                                        <h5>Phở Nam (Sài Gòn)</h5>
+                                        <h5>Phở Nam (Saigon)</h5>
                                         <ul>
-                                            <li>Nước dùng ngọt, đậm đà, dậy mùi quế hồi</li>
-                                            <li>Đĩa rau sống & giá đỗ đi kèm hoành tráng</li>
-                                            <li>Bánh phở nhỏ và dai hơn</li>
-                                            <li>Thêm tương đen, tương ớt, chanh tùy ý</li>
-                                            <li>Nhiều loại thịt (bò viên, gân, sách...)</li>
+                                            <li>Sweet, rich broth with strong cinnamon & star anise aroma</li>
+                                            <li>Generous plate of fresh herbs & bean sprouts</li>
+                                            <li>Smaller, chewier noodles</li>
+                                            <li>Black sauce, chili sauce, lime to taste</li>
+                                            <li>More meat varieties (beef balls, tendon, tripe...)</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -194,7 +195,7 @@
 
                             <div class="story-action">
                                 <a href="../features/search.html?dish=pho" class="story-cta">
-                                    <span>Khám phá quán Phở</span>
+                                    <span>Explore Phở Restaurants</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                 </a>
                             </div>
@@ -206,55 +207,55 @@
             <div class="story-slide" data-index="2">
                 <div class="story-row">
                     <div class="story-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1600688640154-9619e002df30?w=800" alt="Bánh Mì - Vietnamese Sandwich" class="story-image">
+                        <img src="../../assets/images/dishes/Bánh_mì.avif" alt="Bánh Mì - Vietnamese Sandwich" class="story-image">
                         <div class="story-image-overlay">
                             <span class="story-badge fun-fact">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                                Sự thật thú vị
+                                Fun Fact
                             </span>
                         </div>
                     </div>
                     <div class="story-content">
                         <div class="story-content-inner">
                             <h3 class="story-dish-name">Bánh Mì</h3>
-                            <p class="story-dish-tagline">Giao thoa giữa Pháp và Hồn Việt</p>
+                            <p class="story-dish-tagline">The Fusion of France and Vietnamese Soul</p>
                             
                             <div class="story-section">
                                 <h4 class="story-section-title">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    Sự kết hợp hoàn hảo
+                                    The Perfect Fusion
                                 </h4>
-                                <p class="story-text">Khi người Pháp mang bánh mì baguette đến Việt Nam, người Việt đã biến tấu nó theo cách riêng. Bằng cách thêm bột gạo vào bột mì, vỏ bánh trở nên giòn rụm và ruột xốp nhẹ hơn. Sau năm 1954, những chiếc bánh mì kẹp bắt đầu xuất hiện với nhân pate (ảnh hưởng Pháp), đồ chua, rau thơm, ớt và các loại thịt Việt Nam. Kết quả là một món ăn hoàn hảo đến mức được đưa vào từ điển Oxford năm 2011.</p>
+                                <p class="story-text">When the French brought baguette to Vietnam, the Vietnamese transformed it in their own way. By adding rice flour to wheat flour, the crust became crispy and the interior lighter and airier. After 1954, stuffed sandwiches began appearing with pate (French influence), pickled vegetables, herbs, chili, and Vietnamese meats. The result was a dish so perfect it was added to the Oxford Dictionary in 2011.</p>
                             </div>
 
                             <div class="story-section">
                                 <h4 class="story-section-title">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                                    Các loại nhân nhất định phải thử
+                                    Must-Try Fillings
                                 </h4>
                                 <div class="story-variations">
                                     <div class="variation-item">
                                         <span class="variation-name">Thịt Nướng</span>
-                                        <span class="variation-desc">Thịt heo nướng than thơm lừng mùi sả</span>
+                                        <span class="variation-desc">Grilled pork with fragrant lemongrass aroma</span>
                                     </div>
                                     <div class="variation-item">
                                         <span class="variation-name">Xíu Mại</span>
-                                        <span class="variation-desc">Viên thịt sốt cà chua đậm đà - hơi lem luốc nhưng cực ngon</span>
+                                        <span class="variation-desc">Meatballs in rich tomato sauce - a bit messy but incredibly delicious</span>
                                     </div>
                                     <div class="variation-item">
                                         <span class="variation-name">Thập Cẩm</span>
-                                        <span class="variation-desc">Nhân "đầy đủ" với chả lụa, thịt nguội, pate và đồ chua</span>
+                                        <span class="variation-desc">"Full" filling with Vietnamese pork roll, cold cuts, pate, and pickled vegetables</span>
                                     </div>
                                     <div class="variation-item">
                                         <span class="variation-name">Chả Cá</span>
-                                        <span class="variation-desc">Phiên bản nhân chả cá chiên - đặc sản vùng biển</span>
+                                        <span class="variation-desc">Fried fish cake version - coastal specialty</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="story-action">
                                 <a href="../features/search.html?dish=banhmi" class="story-cta">
-                                    <span>Tìm xe Bánh Mì</span>
+                                    <span>Find Bánh Mì Vendors</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                 </a>
                             </div>
@@ -270,55 +271,55 @@
                         <div class="story-image-overlay">
                             <span class="story-badge story">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                                Văn hóa
+                                Culture
                             </span>
                         </div>
                     </div>
                     <div class="story-content">
                         <div class="story-content-inner">
-                            <h3 class="story-dish-name">Ẩm Thực Đường Phố</h3>
-                            <p class="story-dish-tagline">Trái tim & Linh hồn của Sài Gòn</p>
+                            <h3 class="story-dish-name">Street Food Culture</h3>
+                            <p class="story-dish-tagline">The Heart & Soul of Saigon</p>
                             
                             <div class="story-section">
                                 <h4 class="story-section-title">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    Thành phố không bao giờ ngừng ăn
+                                    The City That Never Stops Eating
                                 </h4>
-                                <p class="story-text">Ở TP.HCM, ẩm thực đường phố không chỉ là ăn uống—đó là một lối sống. Từ 5 giờ sáng với những xe bánh mì nóng hổi, đến 2 giờ đêm với những quán phở khuya, thành phố luôn tràn đầy năng lượng ẩm thực. Nhiều quán ăn là gia truyền 3-4 đời, giữ bí quyết riêng không đâu có được. Ngồi trên ghế nhựa thấp, tiếng xe máy hòa cùng tiếng xèo xèo của chảo lửa—đó là trải nghiệm Sài Gòn chân thực nhất.</p>
+                                <p class="story-text">In Ho Chi Minh City, street food isn't just eating—it's a way of life. From 5 AM with hot bánh mì carts, to 2 AM with late-night phở stalls, the city is always full of culinary energy. Many eateries are family-run for 3-4 generations, keeping secret recipes found nowhere else. Sitting on low plastic stools, the sound of motorbikes blending with the sizzle of woks—that's the authentic Saigon experience.</p>
                             </div>
 
                             <div class="story-section">
                                 <h4 class="story-section-title">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    Cẩm nang: Văn hóa ăn hàng
+                                    Guide: Street Food Culture
                                 </h4>
                                 <div class="story-tips">
                                     <div class="tip-item">
                                         <span class="tip-icon">🕐</span>
                                         <div>
-                                            <strong>Thời điểm vàng</strong>
-                                            <p>Quán ngon thường hết sớm trước trưa. Đi sớm để ăn đồ ngon nhất.</p>
+                                            <strong>Golden Hours</strong>
+                                            <p>Good places often sell out before noon. Go early for the best food.</p>
                                         </div>
                                     </div>
                                     <div class="tip-item">
                                         <span class="tip-icon">👥</span>
                                         <div>
-                                            <strong>Theo chân người bản địa</strong>
-                                            <p>Quán nào đông người Việt xếp hàng = Bảo chứng chất lượng.</p>
+                                            <strong>Follow the Locals</strong>
+                                            <p>Places with long lines of Vietnamese people = Quality guarantee.</p>
                                         </div>
                                     </div>
                                     <div class="tip-item">
                                         <span class="tip-icon">💰</span>
                                         <div>
-                                            <strong>Tiền mặt là vua</strong>
-                                            <p>Mang theo tiền lẻ (20k-50k). Đa số quán vỉa hè không quẹt thẻ.</p>
+                                            <strong>Cash is King</strong>
+                                            <p>Bring small bills (20k-50k). Most sidewalk stalls don't accept cards.</p>
                                         </div>
                                     </div>
                                     <div class="tip-item">
                                         <span class="tip-icon">🌶️</span>
                                         <div>
-                                            <strong>Cảnh báo cay</strong>
-                                            <p>Nhớ dặn "không cay" nếu bạn không ăn được ớt nhé!</p>
+                                            <strong>Spice Warning</strong>
+                                            <p>Remember to say "không cay" (not spicy) if you can't handle chili!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -326,7 +327,7 @@
 
                             <div class="story-action">
                                 <a href="../features/search.html" class="story-cta">
-                                    <span>Xem tất cả món đường phố</span>
+                                    <span>View All Street Food</span>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                 </a>
                             </div>
@@ -337,10 +338,10 @@
         </div>
 
         <div class="stories-pagination">
-            <button class="pagination-dot active" data-index="0" aria-label="Xem câu chuyện Cơm Tấm"></button>
-            <button class="pagination-dot" data-index="1" aria-label="Xem câu chuyện Phở"></button>
-            <button class="pagination-dot" data-index="2" aria-label="Xem câu chuyện Bánh Mì"></button>
-            <button class="pagination-dot" data-index="3" aria-label="Xem câu chuyện Đường phố"></button>
+            <button class="pagination-dot active" data-index="0" aria-label="View Cơm Tấm story"></button>
+            <button class="pagination-dot" data-index="1" aria-label="View Phở story"></button>
+            <button class="pagination-dot" data-index="2" aria-label="View Bánh Mì story"></button>
+            <button class="pagination-dot" data-index="3" aria-label="View Street food story"></button>
         </div>
 
         <div class="explore-more-container">
@@ -348,17 +349,17 @@
                 <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-                <span>Khám phá tất cả nhà hàng</span>
+                <span>Explore All Restaurants</span>
                 <svg class="button-icon-right" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                 </svg>
             </button>
         </div>
 
-        <button class="story-nav-arrow prev" id="storyPrev" aria-label="Câu chuyện trước">
+        <button class="story-nav-arrow prev" id="storyPrev" aria-label="Previous story">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         </button>
-        <button class="story-nav-arrow next" id="storyNext" aria-label="Câu chuyện tiếp">
+        <button class="story-nav-arrow next" id="storyNext" aria-label="Next story">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </button>
     </section>
@@ -366,9 +367,9 @@
     <section id="about" class="about-section">
         <div class="container">
             <div class="about-header">
-                <h2 class="about-title">Đội ngũ Phát triển</h2>
+                <h2 class="about-title">Development Team</h2>
                 <p class="about-subtitle">
-                    Sinh viên Khoa Công nghệ Thông tin - Trường Đại học Khoa học Tự nhiên (ĐHQG-HCM)
+                    Students of the Faculty of Information Technology - University of Science (VNU-HCM)
                 </p>
             </div>
 
@@ -382,7 +383,7 @@
                         <div class="member-card-horizontal">
                             <div class="member-visual">
                                 <div class="member-avatar-large">A</div>
-                                <span class="member-role-tag leader">Trưởng Nhóm</span>
+                                <span class="member-role-tag leader">Team Leader</span>
                             </div>
                             <div class="member-content">
                                 <h3 class="member-name-large">Nguyễn Lê Thanh An</h3>
@@ -390,12 +391,12 @@
                                 
                                 <div class="member-work-title">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                                    Nhiệm vụ phụ trách (Back-end + Data)
+                                    Responsibilities (Back-end + Data)
                                 </div>
                                 <ul class="member-tasks">
-                                    <li>Xây dựng và cập nhật dữ liệu quán ăn (.txt).</li>
-                                    <li>Phát triển trang HomePage.</li>
-                                    <li>Phối hợp xây dựng API dữ liệu.</li>
+                                    <li>Build and update restaurant data (.txt).</li>
+                                    <li>Develop HomePage.</li>
+                                    <li>Collaborate on building data API.</li>
                                 </ul>
                             </div>
                         </div>
@@ -405,7 +406,7 @@
                         <div class="member-card-horizontal">
                             <div class="member-visual">
                                 <div class="member-avatar-large">T</div>
-                                <span class="member-role-tag">Thành Viên</span>
+                                <span class="member-role-tag">Member</span>
                             </div>
                             <div class="member-content">
                                 <h3 class="member-name-large">Nguyễn Trương Ngọc Thảo</h3>
@@ -413,12 +414,12 @@
                                 
                                 <div class="member-work-title">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                    Nhiệm vụ phụ trách (Back-end + Bản đồ)
+                                    Responsibilities (Back-end + Maps)
                                 </div>
                                 <ul class="member-tasks">
-                                    <li>Xử lý bản đồ tương tác (Google Maps API).</li>
-                                    <li>Hiển thị các địa điểm trên bản đồ.</li>
-                                    <li>Tính toán tuyến đường tối ưu, thời gian và khoảng cách di chuyển.</li>
+                                    <li>Handle interactive maps (Google Maps API).</li>
+                                    <li>Display locations on map.</li>
+                                    <li>Calculate optimal routes, time and travel distance.</li>
                                 </ul>
                             </div>
                         </div>
@@ -428,7 +429,7 @@
                         <div class="member-card-horizontal">
                             <div class="member-visual">
                                 <div class="member-avatar-large">Tr</div>
-                                <span class="member-role-tag">Thành Viên</span>
+                                <span class="member-role-tag">Member</span>
                             </div>
                             <div class="member-content">
                                 <h3 class="member-name-large">Lê Thành Trung</h3>
@@ -436,12 +437,12 @@
                                 
                                 <div class="member-work-title">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
-                                    Nhiệm vụ phụ trách (Back-end + Dữ liệu)
+                                    Responsibilities (Back-end + Data)
                                 </div>
                                 <ul class="member-tasks">
-                                    <li>Xây dựng API hệ thống.</li>
-                                    <li>Xử lý dữ liệu quán ăn, menu và giờ mở cửa.</li>
-                                    <li>Kết nối và quản lý cơ sở dữ liệu.</li>
+                                    <li>Build system API.</li>
+                                    <li>Process restaurant data, menus and opening hours.</li>
+                                    <li>Connect and manage database.</li>
                                 </ul>
                             </div>
                         </div>
@@ -451,7 +452,7 @@
                         <div class="member-card-horizontal">
                             <div class="member-visual">
                                 <div class="member-avatar-large">L</div>
-                                <span class="member-role-tag">Thành Viên</span>
+                                <span class="member-role-tag">Member</span>
                             </div>
                             <div class="member-content">
                                 <h3 class="member-name-large">Trương Gia Linh</h3>
@@ -459,12 +460,12 @@
                                 
                                 <div class="member-work-title">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                                    Nhiệm vụ phụ trách (Front-end)
+                                    Responsibilities (Front-end)
                                 </div>
                                 <ul class="member-tasks">
-                                    <li>Cùng phát triển giao diện người dùng.</li>
-                                    <li>Xây dựng trang Khảo sát.</li>
-                                    <li>Hỗ trợ chỉnh sửa và tối ưu UI/UX.</li>
+                                    <li>Collaborate on user interface development.</li>
+                                    <li>Build Survey page.</li>
+                                    <li>Support editing and UI/UX optimization.</li>
                                 </ul>
                             </div>
                         </div>
@@ -474,7 +475,7 @@
                         <div class="member-card-horizontal">
                             <div class="member-visual">
                                 <div class="member-avatar-large">K</div>
-                                <span class="member-role-tag">Thành Viên</span>
+                                <span class="member-role-tag">Member</span>
                             </div>
                             <div class="member-content">
                                 <h3 class="member-name-large">Trần Nhựt Đăng Khoa</h3>
@@ -482,11 +483,11 @@
                                 
                                 <div class="member-work-title">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                    Nhiệm vụ phụ trách (Front-end + Phân tích)
+                                    Responsibilities (Front-end + Analysis)
                                 </div>
                                 <ul class="member-tasks">
-                                    <li>Thiết kế chức năng tìm kiếm & lọc nâng cao.</li>
-                                    <li>Lọc theo món, quán, khẩu vị, giá và giờ mở cửa.</li>
+                                    <li>Design search & advanced filter functionality.</li>
+                                    <li>Filter by dish, restaurant, flavor, price and opening hours.</li>
                                 </ul>
                             </div>
                         </div>
@@ -496,7 +497,7 @@
                         <div class="member-card-horizontal">
                             <div class="member-visual">
                                 <div class="member-avatar-large">Tr</div>
-                                <span class="member-role-tag">Thành Viên</span>
+                                <span class="member-role-tag">Member</span>
                             </div>
                             <div class="member-content">
                                 <h3 class="member-name-large">Trần Thị Ngọc Trâm</h3>
@@ -504,12 +505,12 @@
                                 
                                 <div class="member-work-title">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                    Nhiệm vụ phụ trách (Back-end)
+                                    Responsibilities (Back-end)
                                 </div>
                                 <ul class="member-tasks">
-                                    <li>Phát triển chức năng đăng ký/đăng nhập.</li>
-                                    <li>Quản lý hồ sơ cá nhân người dùng.</li>
-                                    <li>Xử lý chức năng lưu địa điểm yêu thích.</li>
+                                    <li>Develop sign up/sign in functionality.</li>
+                                    <li>Manage user personal profiles.</li>
+                                    <li>Handle favorite locations functionality.</li>
                                 </ul>
                             </div>
                         </div>
@@ -519,7 +520,7 @@
                         <div class="member-card-horizontal">
                             <div class="member-visual">
                                 <div class="member-avatar-large">M</div>
-                                <span class="member-role-tag">Thành Viên</span>
+                                <span class="member-role-tag">Member</span>
                             </div>
                             <div class="member-content">
                                 <h3 class="member-name-large">Ông Khánh Minh</h3>
@@ -527,12 +528,12 @@
                                 
                                 <div class="member-work-title">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                                    Nhiệm vụ phụ trách (Front-end)
+                                    Responsibilities (Front-end)
                                 </div>
                                 <ul class="member-tasks">
-                                    <li>Thiết kế giao diện tổng thể.</li>
-                                    <li>Phát triển giao diện Food Tour.</li>
-                                    <li>Hỗ trợ tối ưu hiển thị trên Mobile.</li>
+                                    <li>Design overall interface.</li>
+                                    <li>Develop Food Tour interface.</li>
+                                    <li>Support mobile display optimization.</li>
                                 </ul>
                             </div>
                         </div>
@@ -618,7 +619,7 @@
                 </div>
 
                 <div class="footer-column">
-                    <h4 class="footer-heading">Về Chúng Tôi</h4>
+                    <h4 class="footer-heading">About Us</h4>
                     <ul class="footer-links">
                         <li><a href="#">Facebook</a></li>
                         <li><a href="#">Instagram</a></li>
@@ -629,28 +630,28 @@
                 </div>
 
                 <div class="footer-column">
-                    <h4 class="footer-heading">Khám Phá</h4>
+                    <h4 class="footer-heading">Explore</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Ẩm thực Miền Bắc</a></li>
-                        <li><a href="#">Ẩm thực Miền Trung</a></li>
-                        <li><a href="#">Ẩm thực Miền Nam</a></li>
-                        <li><a href="#">Món Chay</a></li>
-                        <li><a href="#">Đồ uống</a></li>
-                        <li><a href="#">Tráng miệng</a></li>
-                        <li><a href="#">Món đường phố</a></li>
+                        <li><a href="#">Northern Cuisine</a></li>
+                        <li><a href="#">Central Cuisine</a></li>
+                        <li><a href="#">Southern Cuisine</a></li>
+                        <li><a href="#">Vegetarian</a></li>
+                        <li><a href="#">Beverages</a></li>
+                        <li><a href="#">Desserts</a></li>
+                        <li><a href="#">Street Food</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-column">
-                    <h4 class="footer-heading">Hỗ Trợ</h4>
+                    <h4 class="footer-heading">Support</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Trung tâm trợ giúp</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                        <li><a href="#">Điều khoản dịch vụ</a></li>
-                        <li><a href="#">Chính sách bảo mật</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                        <li><a href="#">Đối tác</a></li>
-                        <li><a href="#">Đăng ký nhà hàng</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Partners</a></li>
+                        <li><a href="#">Register Restaurant</a></li>
                     </ul>
                 </div>
             </div>
@@ -669,27 +670,27 @@
             <div class="modal-body login-modal-body">
                 <div class="login-container">
                     <div class="login-icon">👤</div>
-                    <h2 class="login-title" id="loginModalTitle">Đăng Nhập</h2>
-                    <p class="login-subtitle">Chào mừng đến với Food Tour Vietnam</p>
+                    <h2 class="login-title" id="loginModalTitle">Sign In</h2>
+                    <p class="login-subtitle">Welcome to Food Tour Vietnam</p>
                     
                     <div class="login-form">
                         <div class="form-group">
-                            <label for="username">Tên đăng nhập hoặc Email</label>
-                            <input type="text" id="username" placeholder="Nhập tên đăng nhập..." class="form-input">
+                            <label for="username">Username or Email</label>
+                            <input type="text" id="username" placeholder="Enter username..." class="form-input">
                         </div>
                         
                         <div class="form-group">
-                            <label for="password">Mật khẩu</label>
-                            <input type="password" id="password" placeholder="Nhập mật khẩu..." class="form-input">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter password..." class="form-input">
                         </div>
                         
                         <button class="login-button" onclick="handleLogin()">
-                            <span id="loginButtonText">Đăng Nhập</span>
+                            <span id="loginButtonText">Sign In</span>
                         </button>
                         
                         <p class="login-toggle">
-                            <span id="loginToggleText">Chưa có tài khoản? </span>
-                            <a href="#" onclick="toggleLoginMode(); return false;" id="loginToggleLink">Đăng ký ngay</a>
+                            <span id="loginToggleText">Don't have an account? </span>
+                            <a href="#" onclick="toggleLoginMode(); return false;" id="loginToggleLink">Sign up now</a>
                         </p>
                     </div>
                 </div>
@@ -713,47 +714,42 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                Tài khoản của tôi
+                My Account
             </a>
             <a href="../favorites.html" class="dropdown-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                 </svg>
-                Nhà hàng yêu thích
+                Favorite Restaurants
             </a>
             <a href="../tour-history.html" class="dropdown-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                Lịch sử Tour
+                Tour History
             </a>
             <a href="#" class="dropdown-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                Cài đặt
+                Settings
             </a>
             <hr class="dropdown-divider">
             <a href="#" class="dropdown-item logout-item" onclick="handleLogout(); return false;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
-                Đăng Xuất
+                Sign Out
             </a>
         </div>
     </div>
 
-    <div class="chatbot-widget">
-        <button class="chatbot-button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
-            </svg>
-        </button>
-    </div>
+    <div class="chatbot-widget"></div>
 
     <script src="../../assets/js/main.js"></script>
     <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/chatbot.js"></script>
     <script src="../../assets/js/pages/region.js"></script>
 </body>
 </html>

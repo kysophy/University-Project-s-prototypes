@@ -12,21 +12,21 @@
         "currency": "VND"
       },
       "ingredients": [
-        "Bánh phở",
-        "Nước dùng: Bò hoặc gà",
-        "Lát bò mỏng",
-        "Hoa hồi",
-        "Quế",
-        "Giá đỗ",
-        "Chanh",
-        "Ớt",
-        "Nước mắm",
-        "Hành tây",
-        "Rau thơm: ngò rí, húng quế"
+        "Bánh phở (Rice noodles)",
+        "Broth: Beef or chicken",
+        "Thin beef slices",
+        "Star anise",
+        "Cinnamon",
+        "Bean sprouts",
+        "Lime",
+        "Chili",
+        "Fish sauce (Nước mắm)",
+        "Onion",
+        "Fresh herbs: cilantro, Thai basil"
       ],
-      "flavors": ["Đậm đà", "Thơm vị", "Ngọt thịt", "Hương thảo mộc"],
-      "description": "Phở mang đến một cấu trúc hương vị phức tạp, đậm đà. Điểm nhấn của món ăn là nước dùng thơm ngát, nước hầm trong nhiều giờ với xương bò, hành tây và gừng nướng, cùng các loại gia vị ấm như hoa hồi và quế.",
-      "history": "Phở có nguồn gốc từ miền Bắc Việt Nam vào đầu thế kỷ 20, có khả năng là ở vùng Nam Định và Hà Nội. Món ăn này xuất hiện trong thời kỳ Pháp thuộc..."
+      "flavors": ["Rich", "Aromatic", "Meaty sweetness", "Herbal"],
+      "description": "Phở delivers a complex, rich flavor structure. The highlight of the dish is the fragrant broth, simmered for hours with beef bones, onion and roasted ginger, along with warm spices like star anise and cinnamon.",
+      "history": "Phở originated in Northern Vietnam in the early 20th century, likely in the Nam Định and Hà Nội regions. This dish appeared during the French colonial period..."
     },
     "comtam": {
       "id": "comtam",
@@ -40,20 +40,20 @@
         "currency": "VND"
       },
       "ingredients": [
-        "Gạo tấm",
-        "Sườn nướng",
-        "Bì",
-        "Chả",
-        "Trứng ốp la",
-        "Đồ chua",
-        "Nước mắm pha",
-        "Hành phi",
-        "Dưa leo",
-        "Cà chua"
+        "Broken rice (Gạo tấm)",
+        "Grilled ribs (Sườn nướng)",
+        "Shredded pork skin (Bì)",
+        "Steamed pork egg roll (Chả)",
+        "Sunny-side-up egg (Trứng ốp la)",
+        "Pickled vegetables (Đồ chua)",
+        "Fish sauce dressing (Nước mắm pha)",
+        "Fried shallots (Hành phi)",
+        "Cucumber",
+        "Tomato"
       ],
-      "flavors": ["Ngọt thanh", "Thơm nướng", "Béo ngậy", "Chua ngọt"],
-      "description": "Cơm tấm là món ăn đặc trưng của ẩm thực Sài Gòn với hương vị đậm đà, hài hòa. Gạo tấm có hạt nhỏ, mềm dẻo và thơm ngon.",
-      "history": "Cơm tấm xuất phát từ vùng đồng bằng sông Cửu Long, nơi nông dân thường dùng những hạt gạo vỡ (tấm)..."
+      "flavors": ["Sweet and light", "Grilled aroma", "Rich and fatty", "Sweet and sour"],
+      "description": "Cơm Tấm is a signature dish of Saigon cuisine with rich, harmonious flavors. Broken rice has small grains that are soft, chewy and fragrant.",
+      "history": "Cơm Tấm originated from the Mekong Delta region, where farmers often used broken rice grains (tấm)..."
     },
     "hutieu": {
       "id": "hutieu",
@@ -67,19 +67,19 @@
         "currency": "VND"
       },
       "ingredients": [
-        "Bánh hủ tiếu",
-        "Nước dùng: Heo/Hải sản",
-        "Thịt heo",
-        "Tôm",
-        "Giá đỗ",
-        "Hẹ",
-        "Hành lá",
-        "Tỏi phi",
-        "Mực khô"
+        "Hủ tiếu noodles",
+        "Broth: Pork/Seafood",
+        "Pork",
+        "Shrimp",
+        "Bean sprouts",
+        "Chives",
+        "Scallions",
+        "Fried garlic",
+        "Dried squid"
       ],
-      "flavors": ["Ngọt thanh", "Thanh mát", "Thơm tỏi", "Vị biển"],
-      "description": "Hủ tiếu là món ăn mang đậm hương vị miền Nam với nước dùng ngọt thanh từ xương heo hoặc hải sản.",
-      "history": "Hủ tiếu có nguồn gốc từ người Hoa ở vùng Triều Châu, được du nhập vào miền Nam Việt Nam..."
+      "flavors": ["Sweet and light", "Refreshing", "Garlicky", "Oceanic"],
+      "description": "Hủ Tiếu is a dish with strong Southern Vietnamese flavors, featuring a sweet and light broth from pork bones or seafood.",
+      "history": "Hủ Tiếu originated from the Teochew Chinese community, introduced to Southern Vietnam..."
     },
     "banhmi": {
       "id": "banhmi",
@@ -93,19 +93,19 @@
         "currency": "VND"
       },
       "ingredients": [
-        "Bánh mì",
+        "Bánh mì (Vietnamese baguette)",
         "Pate",
-        "Chả lụa",
-        "Thịt nguội",
-        "Đồ chua",
-        "Rau mùi",
-        "Dưa leo",
-        "Ớt",
-        "Nước tương"
+        "Vietnamese pork roll (Chả lụa)",
+        "Cold cuts",
+        "Pickled vegetables (Đồ chua)",
+        "Cilantro",
+        "Cucumber",
+        "Chili",
+        "Soy sauce"
       ],
-      "flavors": ["Giòn rụm", "Béo pate", "Thơm nồng", "Chua cay"],
-      "description": "Bánh mì Việt Nam là sự kết hợp hoàn hảo giữa Đông và Tây. Vỏ bánh giòn rụm bên ngoài, ruột mềm bên trong.",
-      "history": "Bánh mì xuất hiện tại Việt Nam trong thời Pháp thuộc khi người Pháp mang theo bánh mì baguette..."
+      "flavors": ["Crispy", "Rich pate", "Aromatic", "Sour and spicy"],
+      "description": "Bánh Mì Vietnam is the perfect fusion of East and West. Crispy crust on the outside, soft interior inside.",
+      "history": "Bánh Mì appeared in Vietnam during the French colonial period when the French brought baguette..."
     }
   }
 }

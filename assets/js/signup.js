@@ -13,30 +13,30 @@ if (signupForm) {
 
         // Validation
         if (!username || !email || !password) {
-            alert('Vui lòng điền đầy đủ thông tin!');
+            alert('Please fill in all information!');
             return;
         }
 
         if (username.length < 3) {
-            alert('Tên đăng nhập phải có ít nhất 3 ký tự!');
+            alert('Username must be at least 3 characters!');
             return;
         }
 
         if (password.length < 6) {
-            alert('Mật khẩu phải có ít nhất 6 ký tự!');
+            alert('Password must be at least 6 characters!');
             return;
         }
 
         // Check if username already exists
         if (localStorage.getItem(username)) {
-            alert('Tên đăng nhập đã tồn tại! Vui lòng chọn tên khác.');
+            alert('Username already exists! Please choose another name.');
             return;
         }
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            alert('Email không hợp lệ!');
+            alert('Invalid email!');
             return;
         }
 
@@ -50,7 +50,7 @@ if (signupForm) {
         
         localStorage.setItem(username, JSON.stringify(newUser));
         
-        alert('Đăng ký thành công! 🎉\n\nChuyển đến trang đăng nhập...');
+        alert('Sign up successful! 🎉\n\nRedirecting to sign in page...');
         window.location.href = 'signin.html';
     });
 } else {

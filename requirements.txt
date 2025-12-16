@@ -1,0 +1,13 @@
+# Culinary Compass Vietnam - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core dependencies (required)
+Flask>=2.0.0
+Flask-CORS>=3.0.0
+
+# Optional dependencies
+requests>=2.25.0  # Required for Ollama AI chatbot functionality
+
+# Note: Ollama must be installed separately
+# See Materials/OLLAMA_SETUP_GUIDE.md for installation instructions
+

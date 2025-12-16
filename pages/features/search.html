@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tìm kiếm Nhà hàng - Culinary Compass</title>
+    <title>Search Restaurants - Culinary Compass</title>
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
@@ -244,11 +244,56 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         }
 
+        .restaurant-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
         .restaurant-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
             background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
+        }
+
+        .favorite-heart-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .favorite-heart-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .favorite-heart-btn .material-icons-outlined {
+            font-size: 24px;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .favorite-heart-btn.favorited .material-icons-outlined {
+            color: var(--primary-red);
+        }
+
+        .favorite-heart-btn.favorited {
+            background: rgba(255, 255, 255, 1);
         }
 
         .restaurant-info {
@@ -374,7 +419,7 @@
         <div class="header-content">
             <button class="back-button" onclick="goBack()">
                 <span class="material-icons-outlined">arrow_back</span>
-                <span>Quay lại</span>
+                <span>Back</span>
             </button>
             <h1 class="header-title">Culinary Compass</h1>
             <div class="nav-actions" id="navActions">
@@ -386,53 +431,53 @@
     <main>
         <!-- Search Section -->
         <section class="search-container">
-            <h2>Tìm nhà hàng phù hợp với bạn</h2>
+            <h2>Find restaurants that suit you</h2>
             <div class="search-bar">
                 <span class="material-icons-outlined">search</span>
-                <input type="text" id="search-input" placeholder="Tìm kiếm theo tên món ăn hoặc nhà hàng...">
+                <input type="text" id="search-input" placeholder="Search by dish name or restaurant...">
             </div>
         </section>
 
         <!-- Filters Section -->
         <section class="filters-container">
             <select id="radius-select" class="filter-select">
-                <option value="10">📍 Bán kính 10km</option>
-                <option value="5">📍 Bán kính 5km</option>
-                <option value="2">📍 Bán kính 2km</option>
-                <option value="1">📍 Bán kính 1km</option>
+                <option value="10">📍 Radius 10km</option>
+                <option value="5">📍 Radius 5km</option>
+                <option value="2">📍 Radius 2km</option>
+                <option value="1">📍 Radius 1km</option>
             </select>
 
             <select id="price-select" class="filter-select">
-                <option value="">💰 Giá: Tất cả</option>
-                <option value="low">💰 Thấp (dưới 25k)</option>
-                <option value="mid">💰 Trung bình (25k-50k)</option>
-                <option value="high">💰 Cao (trên 50k)</option>
+                <option value="">💰 Price: All</option>
+                <option value="low">💰 Low (under 25k)</option>
+                <option value="mid">💰 Medium (25k-50k)</option>
+                <option value="high">💰 High (over 50k)</option>
             </select>
 
             <select id="cuisine-select" class="filter-select">
-                <option value="">🍜 Ẩm thực: Tất cả</option>
+                <option value="">🍜 Cuisine: All</option>
                 <option value="Noodle">🍜 Phở / Bún / Hủ tiếu</option>
-                <option value="Rice">🍚 Cơm</option>
+                <option value="Rice">🍚 Rice</option>
                 <option value="Sandwich">🥖 Bánh mì</option>
                 <option value="Pancake">🥞 Bánh xèo</option>
-                <option value="Appetizer">🍢 Món khai vị</option>
-                <option value="Dessert">🍰 Tráng miệng</option>
+                <option value="Appetizer">🍢 Appetizer</option>
+                <option value="Dessert">🍰 Dessert</option>
             </select>
 
             <select id="special-select" class="filter-select">
-                <option value="">⭐ Yêu cầu: Tất cả</option>
-                <option value="Popular">⭐ Phổ biến</option>
-                <option value="Vegan options">🌱 Có đồ chay</option>
+                <option value="">⭐ Requirements: All</option>
+                <option value="Popular">⭐ Popular</option>
+                <option value="Vegan options">🌱 Vegetarian Options</option>
             </select>
             
             <div class="toggle-filter">
                 <input type="checkbox" id="open-now-toggle" class="toggle-input">
-                <label for="open-now-toggle">🕐 Đang mở cửa</label>
+                <label for="open-now-toggle">🕐 Open Now</label>
             </div>
 
             <select id="sort-by-select" class="filter-select">
-                <option value="distance">📏 Sắp xếp: Khoảng cách</option>
-                <option value="rating">⭐ Sắp xếp: Đánh giá</option>
+                <option value="distance">📏 Sort: Distance</option>
+                <option value="rating">⭐ Sort: Rating</option>
             </select>
         </section>
 
@@ -448,8 +493,8 @@
                 <!-- Empty state -->
                 <div class="empty-state" id="empty-state">
                     <div class="empty-state-icon">🔍</div>
-                    <h3 class="empty-state-title">Bắt đầu tìm kiếm</h3>
-                    <p class="empty-state-text">Nhập tên món ăn hoặc nhà hàng để bắt đầu tìm kiếm</p>
+                    <h3 class="empty-state-title">Start Searching</h3>
+                    <p class="empty-state-text">Enter a dish name or restaurant to start searching</p>
                 </div>
             </div>
         </section>
@@ -457,6 +502,7 @@
 
     <!-- Scripts -->
     <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/favorites.js"></script>
     <script>
         // Back button
         function goBack() {
@@ -631,15 +677,44 @@
                 }
             }
 
+            // Store restaurants globally for access by heart button
+            let currentRestaurants = [];
+
             // Render restaurant cards
             function renderRestaurants(restaurants) {
-                resultsCount.textContent = `Tìm thấy ${restaurants.length} nhà hàng`;
+                resultsCount.textContent = `Found ${restaurants.length} restaurants`;
+                
+                // Store restaurants for later access
+                currentRestaurants = restaurants;
                 
                 restaurants.forEach(restaurant => {
                     console.log('Restaurant:', restaurant.name, 'Image URL:', restaurant.image_url);
                     const card = createRestaurantCard(restaurant);
                     restaurantList.appendChild(card);
                 });
+            }
+
+            // Helper function to properly encode UTF-8 strings to base64
+            function utf8ToBase64(str) {
+                try {
+                    // Properly encode UTF-8 strings to base64
+                    // encodeURIComponent converts to UTF-8, unescape converts %XX to bytes, then btoa encodes to base64
+                    return btoa(unescape(encodeURIComponent(str)));
+                } catch (e) {
+                    console.error('Error encoding to base64:', e);
+                    // Return null to trigger fallback to restaurant ID lookup
+                    return null;
+                }
+            }
+
+            // Helper function to decode base64 to UTF-8 string
+            function base64ToUtf8(str) {
+                try {
+                    return decodeURIComponent(escape(atob(str)));
+                } catch (e) {
+                    console.error('Error decoding from base64:', e);
+                    return null;
+                }
             }
 
             // Create restaurant card element
@@ -652,14 +727,54 @@
                 // Fix image URL path - convert to absolute path from page location
                 let imageUrl = restaurant.image_url || '../../assets/images/restaurants-img/comtam.png';
                 
+                // Check if restaurant is favorited (only if user is authenticated)
+                let isFavorited = false;
+                if (typeof isFavorite === 'function') {
+                    // Check authentication first
+                    let authenticated = false;
+                    if (typeof isAuthenticated === 'function') {
+                        authenticated = isAuthenticated();
+                    } else if (typeof isLoggedIn === 'function') {
+                        authenticated = isLoggedIn();
+                    } else {
+                        const accessToken = localStorage.getItem('accessToken');
+                        const currentUser = localStorage.getItem('currentUser');
+                        authenticated = !!(accessToken && currentUser);
+                    }
+                    
+                    if (authenticated) {
+                        isFavorited = isFavorite(restaurant.id, 'restaurant');
+                    }
+                }
+                const heartClass = isFavorited ? 'favorited' : '';
+                const heartIcon = isFavorited ? 'favorite' : 'favorite_border';
+                
+                // Store restaurant data in data attribute (properly encode UTF-8 to base64)
+                const restaurantJson = JSON.stringify(restaurant);
+                const restaurantData = utf8ToBase64(restaurantJson);
+                
+                // If encoding fails, store restaurant ID and we'll fetch from the restaurants array
+                const restaurantId = restaurant.id;
+                
                 // If path starts with ../../, it's already relative from pages/features/
                 // Keep it as is, browser will resolve it correctly
                 
+                // Store restaurant data - use base64 if available, otherwise store ID
+                const dataAttr = restaurantData ? `data-restaurant="${restaurantData}"` : `data-restaurant-id="${restaurantId}"`;
+                
                 card.innerHTML = `
-                    <img src="${imageUrl}" 
-                         alt="${restaurant.name}" 
-                         class="restaurant-image"
-                         onerror="this.onerror=null; this.style.background='linear-gradient(135deg, #FFF7ED, #FFEDD5)'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.removeAttribute('src'); this.innerHTML='<span style=\\'font-size: 3rem;\\'>🍜</span>';">
+                    <div class="restaurant-image-container">
+                        <img src="${imageUrl}" 
+                             alt="${restaurant.name}" 
+                             class="restaurant-image"
+                             onerror="this.onerror=null; this.style.background='linear-gradient(135deg, #FFF7ED, #FFEDD5)'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.removeAttribute('src'); this.innerHTML='<span style=\\'font-size: 3rem;\\'>🍜</span>';">
+                        <button class="favorite-heart-btn ${heartClass}" 
+                                ${dataAttr}
+                                onclick="event.stopPropagation(); toggleRestaurantFavorite(this, ${restaurantId})"
+                                title="${isFavorited ? 'Remove from favorites' : 'Add to favorites'}">
+                            <span class="material-icons-outlined">${heartIcon}</span>
+                        </button>
+                    </div>
                     <div class="restaurant-info">
                         <h3 class="restaurant-name">${restaurant.name}</h3>
                         <div class="restaurant-rating">
@@ -696,8 +811,8 @@
                 emptyState.style.display = 'block';
                 emptyState.innerHTML = `
                     <div class="empty-state-icon">😔</div>
-                    <h3 class="empty-state-title">Không tìm thấy kết quả</h3>
-                    <p class="empty-state-text">Thử điều chỉnh bộ lọc hoặc tìm kiếm khác</p>
+                    <h3 class="empty-state-title">No Results Found</h3>
+                    <p class="empty-state-text">Try adjusting filters or search differently</p>
                 `;
                 resultsCount.textContent = '';
             }
@@ -706,9 +821,9 @@
             function showError() {
                 restaurantList.innerHTML = `
                     <div class="error-message">
-                        <p>❌ Không thể kết nối đến máy chủ</p>
+                        <p>❌ Cannot connect to server</p>
                         <p style="font-size: 0.9rem; margin-top: 1rem;">
-                            Vui lòng khởi động Flask server trước:<br>
+                            Please start the Flask server first:<br>
                             <code style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 4px;">python app.py</code>
                         </p>
                     </div>
@@ -716,8 +831,97 @@
                 resultsCount.textContent = '';
             }
 
-            // Make function globally accessible
+            // Toggle restaurant favorite
+            function toggleRestaurantFavorite(buttonElement, restaurantId) {
+                // Check if user is authenticated - try both auth systems
+                let authenticated = false;
+                
+                // Try favorites.js isAuthenticated function
+                if (typeof isAuthenticated === 'function') {
+                    authenticated = isAuthenticated();
+                }
+                
+                // Also try auth.js isLoggedIn function as fallback
+                if (!authenticated && typeof isLoggedIn === 'function') {
+                    authenticated = isLoggedIn();
+                }
+                
+                // If still not authenticated, check localStorage directly
+                if (!authenticated) {
+                    const accessToken = localStorage.getItem('accessToken');
+                    const currentUser = localStorage.getItem('currentUser');
+                    const isLoggedIn = localStorage.getItem('isLoggedIn');
+                    authenticated = !!(accessToken && currentUser) || isLoggedIn === 'true';
+                }
+                
+                if (!authenticated) {
+                    if (confirm('Please sign in to add favorites. Would you like to sign in now?')) {
+                        window.location.href = '../../pages/signin.html';
+                    }
+                    return;
+                }
+
+                // Get restaurant data - try base64 first, then fallback to ID lookup
+                let restaurantData = null;
+                try {
+                    const restaurantDataStr = buttonElement.getAttribute('data-restaurant');
+                    if (restaurantDataStr) {
+                        // Decode from base64
+                        const decoded = base64ToUtf8(restaurantDataStr);
+                        if (decoded) {
+                            restaurantData = JSON.parse(decoded);
+                        }
+                    }
+                    
+                    // Fallback: find restaurant by ID from current restaurants
+                    if (!restaurantData && restaurantId && currentRestaurants) {
+                        restaurantData = currentRestaurants.find(r => r.id === restaurantId);
+                    }
+                    
+                    if (!restaurantData) {
+                        console.error('Restaurant data not found');
+                        return;
+                    }
+
+                // Prepare restaurant data for favorites
+                const favoriteData = {
+                    id: restaurantData.id,
+                    name: restaurantData.name,
+                    type: 'restaurant',
+                    rating: restaurantData.rating,
+                    price_text: restaurantData.price_text,
+                    image_url: restaurantData.image_url,
+                    address: restaurantData.address || '',
+                    description: restaurantData.description || ''
+                };
+
+                    // Toggle favorite
+                    if (typeof toggleFavorite === 'function') {
+                        const isNowFavorited = toggleFavorite(favoriteData);
+                        
+                        // Update the heart button state
+                        const heartIcon = buttonElement.querySelector('.material-icons-outlined');
+                        if (heartIcon) {
+                            if (isNowFavorited) {
+                                buttonElement.classList.add('favorited');
+                                heartIcon.textContent = 'favorite';
+                                buttonElement.title = 'Remove from favorites';
+                            } else {
+                                buttonElement.classList.remove('favorited');
+                                heartIcon.textContent = 'favorite_border';
+                                buttonElement.title = 'Add to favorites';
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error toggling favorite:', error);
+                    alert('An error occurred while updating favorites. Please try again.');
+                }
+            }
+
+            // Make functions globally accessible
             window.searchRestaurants = searchRestaurants;
+            window.toggleRestaurantFavorite = toggleRestaurantFavorite;
         });
     </script>
 </body>

@@ -65,13 +65,68 @@ logs/
 *.tmp
 *.temp
 *.bak
+*.backup
+*.orig
+
+# ----- Flask Specific -----
+instance/
+.webassets-cache
+.flaskenv
+*.db
+*.sqlite
+*.sqlite3
+
+# ----- Testing & Coverage -----
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.hypothesis/
+*.cover
+.cache
+nosetests.xml
+coverage.xml
+*.coveragerc
+
+# ----- Node.js (if any JS build tools added) -----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ----- Jupyter Notebooks (if any) -----
+.ipynb_checkpoints
+*.ipynb
+
+# ----- Compiled / Minified Files (if any) -----
+*.min.js
+*.min.css
+*.map
+
+# ----- IDE / Editor (additional) -----
+*.code-workspace
+*.sublime-*
+.vscode/
+.idea/
+*.iml
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ----- OneDrive / Cloud Sync -----
+~$*
 
 # =============================================
 # DO NOT IGNORE (explicitly track these):
 # - All HTML, CSS, JS files
-# - All JSON data files
+# - All JSON data files (including data_chat.json if it exists)
 # - All images in assets/
-# - README.md, STRUCTURE.md
+# - README.md, STRUCTURE.md, documentation
 # - app.py, search_api.py
+# - requirements.txt (if created)
 # =============================================
 

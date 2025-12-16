@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Handle back button navigation based on region parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const region = urlParams.get('region');
+    const backHomeBtn = document.getElementById('back-home-btn');
+    
+    if (backHomeBtn) {
+        const regionPages = {
+                'hcmc': '../regions/hcmc.html'
+            };
+            const regionPage = regionPages[region] || '../../index.html';
+            backHomeBtn.onclick = function() {
+                window.location.href = regionPage;
+            };
+    }
+    
     var map = L.map('map');
     map.setView([10.7725, 106.6980], 13); // Ho Chi Minh City center
 

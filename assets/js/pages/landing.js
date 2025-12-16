@@ -120,7 +120,7 @@ function showSelectionFeedback(regionId) {
     // Create a temporary notification (optional enhancement)
     const notification = document.createElement('div');
     notification.className = 'selection-notification';
-    notification.textContent = `Đã chọn ${region.name}`;
+    notification.textContent = `Selected ${region.name}`;
     notification.style.cssText = `
         position: fixed;
         top: 100px;
@@ -203,13 +203,13 @@ function showWelcomeModal(region) {
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-icon">🍜</div>
-            <h2 class="modal-title">Chào mừng bạn đến với</h2>
+            <h2 class="modal-title">Welcome to</h2>
             <h3 class="modal-region">${region.name}</h3>
             <p class="modal-description">${region.description}</p>
             <div class="modal-specialties">
                 ${region.specialties.map(item => `<span class="modal-tag">${item}</span>`).join('')}
             </div>
-            <button class="modal-button" onclick="proceedToMap()">Bắt đầu khám phá</button>
+            <button class="modal-button" onclick="proceedToMap()">Start Exploring</button>
         </div>
     `;
     

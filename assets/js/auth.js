@@ -80,7 +80,7 @@ function updateNavigation() {
                         <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
-                        Đăng xuất
+                        Sign Out
                     </a>
                 </div>
             </div>
@@ -89,8 +89,8 @@ function updateNavigation() {
         // Show login/register buttons - link to actual pages
         const basePath = getBasePath();
         navActions.innerHTML = `
-            <a href="${basePath}pages/signin.html" class="nav-login">Đăng nhập</a>
-            <a href="${basePath}pages/signup.html" class="nav-register">Đăng ký</a>
+            <a href="#" onclick="storePageAndRedirect('${basePath}pages/signin.html')" class="nav-login">Sign In</a>
+            <a href="#" onclick="storePageAndRedirect('${basePath}pages/signup.html')" class="nav-register">Sign Up</a>
         `;
     }
 }
@@ -131,12 +131,18 @@ function toggleAccountDropdown(event) {
     }
 }
 
+function storePageAndRedirect(url) {
+    const currentPage = window.location.href;
+    sessionStorage.setItem('previousPage', currentPage);
+    window.location.href = url;
+}
+
 // Handle logout
 function handleLogout(event) {
     event.preventDefault();
     
     // Confirm logout
-    if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+    if (confirm('Are you sure you want to sign out?')) {        
         // Clear localStorage (using Account-Management keys)
         localStorage.removeItem('accessToken');
         localStorage.removeItem('currentUser');
@@ -150,7 +156,7 @@ function handleLogout(event) {
         
         // Show notification
         if (window.utils && window.utils.showNotification) {
-            window.utils.showNotification('Đã đăng xuất thành công! 👋');
+            window.utils.showNotification('Signed out successfully! 👋');
         }
         
         // Redirect to home page

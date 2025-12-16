@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorite Restaurants - Culinary Compass</title>
+    <title>Favorites - Culinary Compass</title>
     <link rel="stylesheet" href="../assets/css/profile.css">
     <link rel="stylesheet" href="../assets/css/favorites.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -17,43 +17,43 @@
         </div>
 
         <div class="nav-actions">
-            <a href="../index.html" class="btn-outline">← Trang chủ</a>
-            <button class="btn-outline active">♡ Địa điểm yêu thích</button>
-            <button class="btn-outline" onclick="window.location.href='tour-history.html'">↺ Lịch sử tour</button>
-            <button class="btn-outline" onclick="window.location.href='profile.html'">👤 Hồ sơ</button>
-            <button class="btn-outline logout-btn" onclick="handleLogout()">↪ Đăng xuất</button>
+            <button class="btn-outline" onclick="window.location.href='regions/hcmc.html'">← Home</button>
+            <button class="btn-outline active">♡ Favorites</button>
+            <button class="btn-outline" onclick="window.location.href='tour-history.html'">↺ Tour History</button>
+            <button class="btn-outline" onclick="window.location.href='profile.html'">👤 Profile</button>
+            <button class="btn-outline logout-btn" onclick="handleLogout()">↪ Sign Out</button>
         </div>
     </header>
 
     <main class="profile-container">
         <div class="page-title">
-            <h2>♡ Địa Điểm Yêu Thích</h2>
-            <p>Quản lý các nhà hàng và món ăn yêu thích của bạn</p>
+            <h2>♡ Favorites</h2>
+            <p>Manage your favorite restaurants and dishes</p>
         </div>
 
         <!-- Filter Section -->
         <div class="card filter-card">
             <div class="filter-row">
                 <div class="filter-group">
-                    <label for="filter-type">Loại:</label>
+                    <label for="filter-type">Type:</label>
                     <select id="filter-type" class="filter-select" onchange="filterFavorites()">
-                        <option value="all">Tất cả</option>
-                        <option value="restaurants">Nhà hàng</option>
-                        <option value="dishes">Món ăn</option>
+                        <option value="all">All</option>
+                        <option value="restaurants">Restaurants</option>
+                        <option value="dishes">Dishes</option>
                     </select>
                 </div>
                 
                 <div class="filter-group">
-                    <label for="sort-by">Sắp xếp:</label>
+                    <label for="sort-by">Sort:</label>
                     <select id="sort-by" class="filter-select" onchange="sortFavorites()">
-                        <option value="recent">Mới nhất</option>
-                        <option value="oldest">Cũ nhất</option>
-                        <option value="name">Tên A-Z</option>
-                        <option value="rating">Đánh giá cao</option>
+                        <option value="recent">Most Recent</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="name">Name A-Z</option>
+                        <option value="rating">Highest Rating</option>
                     </select>
                 </div>
 
-                <button class="btn-clear" onclick="clearAllFavorites()">Xóa tất cả</button>
+                <button class="btn-clear" onclick="clearAllFavorites()">Clear All</button>
             </div>
         </div>
 
@@ -67,9 +67,9 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="empty-icon">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
             </svg>
-            <h3>Chưa có địa điểm yêu thích</h3>
-            <p>Bắt đầu khám phá và thêm các nhà hàng yêu thích của bạn!</p>
-            <button class="btn-primary" onclick="window.location.href='features/search.html'">Khám phá ngay</button>
+            <h3>No favorites yet</h3>
+            <p>Start exploring and add your favorite restaurants!</p>
+            <button class="btn-primary" onclick="window.location.href='features/search.html'">Explore Now</button>
         </div>
     </main>
 

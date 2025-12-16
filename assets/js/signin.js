@@ -6,6 +6,22 @@ function mockGenerateJWT(payload) {
     return `${header}.${body}.signature`;
 }
 
+// Store referrer when this page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Store the referrer page for back navigation after signin
+    if (!sessionStorage.getItem('previousPage')) {
+        // Try document.referrer first
+        if (document.referrer && !document.referrer.includes('signin') && !document.referrer.includes('signup')) {
+            sessionStorage.setItem('previousPage', document.referrer);
+            console.log('Stored previousPage from referrer:', document.referrer);
+        } else {
+            // Fallback: if coming from hcmc or other region pages without referrer, default to index
+            // But we can also check the URL history
+            console.log('No valid referrer found');
+        }
+    }
+});
+
 const signinForm = document.getElementById('signinForm');
 
 if (signinForm) {
@@ -24,7 +40,7 @@ if (signinForm) {
         const storedUserJSON = localStorage.getItem(usernameInput);
 
         if (!storedUserJSON) {
-            alert('Tên đăng nhập không tồn tại!');
+            alert('Username does not exist!');
             return;
         }
 
@@ -40,13 +56,18 @@ if (signinForm) {
             localStorage.setItem('currentUser', JSON.stringify(userObj));
 
             // Show success and redirect
-            alert('Đăng nhập thành công! Chào mừng ' + userObj.username + ' 🎉');
+            alert('Sign in successful! Welcome ' + userObj.username + ' 🎉');
             
-            // Redirect to home page
-            window.location.href = '../index.html';
+            // Redirect to previous page or home
+            const referrer = sessionStorage.getItem('previousPage');
+            if (referrer && !referrer.includes('signin') && !referrer.includes('signup')) {
+                window.location.href = referrer;
+            } else {
+                window.location.href = '../index.html';
+            }
         } else {
             console.log("Incorrect password");
-            alert('Mật khẩu không đúng!');
+            alert('Incorrect password!');
         }
     });
 } else {

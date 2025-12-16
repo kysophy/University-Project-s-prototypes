@@ -6,13 +6,24 @@ function mockGenerateJWT(payload) {
     return `${header}.${body}.newsignature`;
 }
 
+// Go back to previous page or home
+function goBack() {
+    // Check if there's a previous page in history
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        // If no history, go to home
+        window.location.href = '../index.html';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Check if user is logged in
     const token = localStorage.getItem('accessToken');
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if (!token || !currentUser) {
-        alert('Bạn chưa đăng nhập!');
+        alert('You are not logged in!');
         window.location.href = 'signin.html';
         return;
     }
@@ -82,19 +93,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Validation
         if (!newUsername || !newEmail) {
-            alert("Tên đăng nhập và Email không được để trống!");
+            alert("Username and Email cannot be empty!");
             return;
         }
 
         if (newUsername.length < 3) {
-            alert("Tên đăng nhập phải có ít nhất 3 ký tự!");
+            alert("Username must be at least 3 characters!");
             return;
         }
 
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(newEmail)) {
-            alert('Email không hợp lệ!');
+            alert('Invalid email!');
             return;
         }
 
@@ -104,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // If username changed, check if new username is available
         if (newUsername !== oldUsername) {
             if (localStorage.getItem(newUsername)) {
-                alert("Tên đăng nhập mới đã có người sử dụng! Vui lòng chọn tên khác.");
+                alert("New username is already taken! Please choose another name.");
                 return;
             }
 
@@ -121,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update password if provided
         if (newPassword) {
             if (newPassword.length < 6) {
-                alert("Mật khẩu phải có ít nhất 6 ký tự!");
+                alert("Password must be at least 6 characters!");
                 return;
             }
             userData.password = newPassword;
@@ -142,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('accessToken', newToken);
 
         // Success
-        alert("Cập nhật hồ sơ thành công! ✅");
+        alert("Profile updated successfully! ✅");
         
         // Return to view mode
         cancelBtn.click();
@@ -159,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Global logout function (can be called from onclick)
 function handleLogout() {
-    if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+    if (confirm('Are you sure you want to sign out?')) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('currentUser');
         localStorage.removeItem('isLoggedIn');

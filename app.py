@@ -1,10 +1,21 @@
 import math
 import json
+import re
+import time
+import hashlib
 from dataclasses import dataclass, field
 from datetime import datetime, time
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
+
+# Try to import requests for Ollama (optional)
+try:
+    import requests
+    REQUESTS_AVAILABLE = True
+except ImportError:
+    REQUESTS_AVAILABLE = False
+    print("⚠️ requests not installed. Install with: pip install requests (for Ollama support)")
 
 # ----------------------------------------------------------------------------
 # CLASSES
@@ -50,6 +61,7 @@ class Restaurant:
     def getSpecialFlags(self) -> List[str]: return self.specialFlags
     def getLocation(self) -> Coordinates: return self.location
     def getAddress(self) -> str: return self.address
+    def getPriceText(self) -> str: return self.price_text
 
     # Helper for JSON
     def to_dict(self):
@@ -177,6 +189,39 @@ def load_data_from_json(json_path: str) -> List[Restaurant]:
 
 # --- Load the data ---
 DATA_SOURCE = load_data_from_json('data/restaurants.json')
+
+# Loading data for chatbot
+CHAT_DATA = {}
+DISHES_DATA = {}
+REGIONS_DATA = []
+
+try:
+    with open('data/data_chat.json', 'r', encoding='utf-8') as f:
+        CHAT_DATA = json.load(f)
+except FileNotFoundError:
+    print("⚠️ data_chat.json not found")
+
+try:
+    with open('data/dishes.json', 'r', encoding='utf-8') as f:
+        DISHES_DATA = json.load(f)
+except FileNotFoundError:
+    print("⚠️ dishes.json not found")
+
+try:
+    with open('data/regions.json', 'r', encoding='utf-8') as f:
+        REGIONS_DATA = json.load(f).get('regions', [])
+except FileNotFoundError:
+    print("⚠️ regions.json not found")
+
+#Configure the chatbot:
+
+OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_MODEL = "llama3.2:3b"  # Change to your preferred model
+USE_OLLAMA = True  # Set False to use rule-based only
+OLLAMA_TIMEOUT = 15
+
+# Response cache
+chatbot_cache = {}
 
 # ----------------------------------------------------------------------------
 # SERVICE CLASS
@@ -506,6 +551,593 @@ def check_in_tour_route(restaurant_id):
     return jsonify({"restaurant_id": restaurant_id, "in_route": in_route})
 
 # ----------------------------------------------------------------------------
+# FREE CHATBOT IMPLEMENTATION (Ollama + Enhanced Rules)
+# ----------------------------------------------------------------------------
+
+def check_ollama_available() -> bool:
+    """Check if Ollama is running and available"""
+    if not USE_OLLAMA or not REQUESTS_AVAILABLE:
+        return False
+    try:
+        response = requests.get("http://localhost:11434/api/tags", timeout=2)
+        if response.status_code == 200:
+            models = response.json().get('models', [])
+            model_names = [m.get('name', '') for m in models]
+            return any(OLLAMA_MODEL in name for name in model_names)
+    except:
+        pass
+    return False
+
+def get_restaurant_summary_for_ai() -> str:
+    """Create compressed summary of restaurants for AI context"""
+    if not DATA_SOURCE:
+        return "No restaurant data available."
+    summaries = []
+    # Include more restaurants for better context (up to 30)
+    for r in DATA_SOURCE[:30]:
+        cuisines = ', '.join(r.getCuisines()[:2])
+        price_info = f"{r.getPriceText()} (avg: {r.getAveragePrice():,} VND)"
+        summaries.append(
+            f"{r.getName()}: {cuisines}, Rating {r.getRating()}/5, {price_info}, "
+            f"Tags: {', '.join(r.getTags()[:3])}"
+        )
+    
+    # Add price statistics
+    prices = [r.getAveragePrice() for r in DATA_SOURCE if r.getAveragePrice() > 0]
+    if prices:
+        avg_price = sum(prices) / len(prices)
+        min_price = min(prices)
+        max_price = max(prices)
+        price_stats = f"\n\nPRICE STATISTICS: Average {avg_price:,.0f} VND, Range: {min_price:,.0f} - {max_price:,.0f} VND"
+        return "\n".join(summaries) + price_stats
+    
+    return "\n".join(summaries)
+
+def get_dish_summary_for_ai() -> str:
+    """Create summary of dishes for AI context"""
+    if not DISHES_DATA.get('dishes'):
+        return "No dish data available."
+    dishes = []
+    for dish_id, dish in list(DISHES_DATA.get('dishes', {}).items())[:15]:
+        name = dish.get('name', 'Unknown')
+        desc = dish.get('description', '')[:80]
+        ingredients = ', '.join(dish.get('ingredients', [])[:5])
+        dishes.append(f"{name}: {desc}. Ingredients: {ingredients}")
+    return "\n".join(dishes)
+
+def get_region_summary_for_ai() -> str:
+    """Create summary of regions for AI context"""
+    if not REGIONS_DATA:
+        return "No region data available."
+    regions = []
+    for reg in REGIONS_DATA[:5]:
+        specialties = ', '.join(reg.get('specialties', [])[:3])
+        regions.append(f"{reg.get('nameEn', reg.get('name', ''))}: {specialties}")
+    return "\n".join(regions)
+
+def parse_price(price_str: str) -> Optional[int]:
+    """Parse price from string like '50k', '50000', etc."""
+    try:
+        price_str = price_str.replace(',', '').lower().strip()
+        if price_str.endswith('k'):
+            return int(float(price_str[:-1]) * 1000)
+        return int(float(price_str))
+    except:
+        return None
+
+def try_rule_based_chatbot(user_message: str) -> Optional[Dict]:
+    """
+    Enhanced rule-based chatbot using project data
+    Returns response dict or None if can't handle
+    """
+    query_lower = user_message.lower()
+    
+    # 1. Check data_chat.json first (existing keyword matching)
+    if CHAT_DATA:
+        best_key = None
+        best_score = 0
+        for key, entry in CHAT_DATA.items():
+            keywords = entry.get('keywords', [])
+            score = 0
+            for kw in keywords:
+                kw_lower = kw.lower()
+                if query_lower == kw_lower:
+                    score += 4
+                elif kw_lower in query_lower:
+                    score += 2
+                elif any(len(p) > 2 and p in query_lower for p in kw_lower.split()):
+                    score += 1
+            if score > best_score:
+                best_score = score
+                best_key = key
+        
+        if best_key and best_score > 0:
+            responses = CHAT_DATA[best_key].get('responses', [])
+            if responses:
+                return {
+                    'response': responses[0] if len(responses) == 1 else responses[hash(user_message) % len(responses)],
+                    'confidence': 0.9,
+                    'source': 'data_chat'
+                }
+    
+    # 2. Greeting
+    if any(word in query_lower for word in ['hello', 'hi', 'hey', 'good morning', 'good afternoon']):
+        return {
+            'response': '👋 Hey there! Ready to explore some amazing Vietnamese food in Ho Chi Minh City?',
+            'confidence': 0.95,
+            'source': 'rule-based'
+        }
+    
+    # 2.5. Spiciness queries (general or dish-specific)
+    if any(word in query_lower for word in ['spicy', 'spice', 'heat', 'hot', 'how spicy', 'spiciness']):
+        # Check if asking about a specific dish
+        dishes = DISHES_DATA.get('dishes', {})
+        for dish_id, dish in dishes.items():
+            dish_name = dish.get('name', '').lower()
+            if dish_name and dish_name in query_lower:
+                # Check if dish is known to be spicy
+                description = dish.get('description', '').lower()
+                dish_id_lower = dish_id.lower()
+                # Bún Bò Huế is famously spicy
+                is_spicy = 'bún bò huế' in dish_name or 'bun bo hue' in dish_id_lower or 'spicy' in description
+                
+                if is_spicy:
+                    return {
+                        'response': f"🌶️ {dish.get('name')} is known to be quite spicy! It typically has a bold, fiery flavor. If you're sensitive to spice, you can ask for it less spicy ('ít cay' in Vietnamese).",
+                        'confidence': 0.9,
+                        'source': 'rule-based'
+                    }
+                else:
+                    return {
+                        'response': f"🍜 {dish.get('name')} is generally not very spicy, but you can add chili sauce or fresh chilies to adjust the heat level to your preference!",
+                        'confidence': 0.9,
+                        'source': 'rule-based'
+                    }
+        
+        # General spiciness question about Vietnamese food
+        return {
+            'response': (
+                "🌶️ Vietnamese food in Ho Chi Minh City varies in spiciness:\n"
+                "• **Mild dishes**: Phở, Bánh Mì, Cơm Tấm, Hủ Tiếu (usually not spicy)\n"
+                "• **Spicy dishes**: Bún Bò Huế, some noodle soups with chili\n"
+                "• **Customizable**: Most places let you add chili sauce or fresh chilies to adjust heat\n"
+                "• **Tip**: Say 'không cay' (not spicy) or 'ít cay' (less spicy) when ordering!"
+            ),
+            'confidence': 0.9,
+            'source': 'rule-based'
+        }
+    
+    # 3. Dish information queries
+    dishes = DISHES_DATA.get('dishes', {})
+    for dish_id, dish in dishes.items():
+        dish_name = dish.get('name', '').lower()
+        dish_name_no_diacritics = dish_name.replace('ở', 'o').replace('ấ', 'a').replace('ế', 'e').replace('ì', 'i').replace('ạ', 'a')
+        query_no_diacritics = query_lower.replace('ở', 'o').replace('ấ', 'a').replace('ế', 'e').replace('ì', 'i').replace('ạ', 'a')
+        
+        # Match dish name (with or without diacritics, or partial match)
+        dish_matched = (dish_name and dish_name in query_lower) or \
+                      (dish_name_no_diacritics and dish_name_no_diacritics in query_no_diacritics) or \
+                      (dish_id.lower() in query_lower)
+        
+        if dish_matched:
+            # Taste/Flavor query (check this FIRST before general description)
+            taste_keywords = ['taste', 'flavor', 'flavour', 'tastes like', 'taste like', 'flavors like', 'flavours like']
+            # Check for "how does [dish] taste" pattern
+            has_taste_query = any(word in query_lower for word in taste_keywords) or \
+                             ('how does' in query_lower and ('taste' in query_lower or 'flavor' in query_lower)) or \
+                             ('what does' in query_lower and ('taste' in query_lower or 'flavor' in query_lower))
+            
+            if has_taste_query:
+                flavors = dish.get('flavors', [])
+                desc = dish.get('description', '')
+                if flavors:
+                    flavors_text = ', '.join(flavors)
+                    response_text = f"🍜 {dish.get('name')} tastes: {flavors_text}."
+                    if desc and 'flavor' in desc.lower():
+                        # Include flavor description if available
+                        flavor_desc = desc[:150] if len(desc) > 150 else desc
+                        response_text += f" {flavor_desc}"
+                    return {
+                        'response': response_text,
+                        'confidence': 0.95,
+                        'source': 'rule-based'
+                    }
+                elif desc:
+                    # Fallback to description if no flavors field
+                    return {
+                        'response': f"🍜 {dish.get('name')}: {desc[:200]}...",
+                        'confidence': 0.85,
+                        'source': 'rule-based'
+                    }
+            # Ingredients query
+            if any(word in query_lower for word in ['ingredient', "what's in", 'what is in', 'recipe']):
+                ingredients = dish.get('ingredients', [])[:8]
+                if ingredients:
+                    return {
+                        'response': f"🧾 Ingredients for {dish.get('name')}: {', '.join(ingredients)}.",
+                        'confidence': 0.9,
+                        'source': 'rule-based'
+                    }
+            # History query
+            if any(word in query_lower for word in ['history', 'origin', 'came from']):
+                history = dish.get('history', '')
+                if history:
+                    return {
+                        'response': f"📚 {dish.get('name')} — {history[:300]}...",
+                        'confidence': 0.9,
+                        'source': 'rule-based'
+                    }
+            # General dish info (fallback)
+            desc = dish.get('description', '')
+            if desc:
+                return {
+                    'response': f"🍜 {dish.get('name')}: {desc[:200]}...",
+                    'confidence': 0.85,
+                    'source': 'rule-based'
+                }
+    
+    # 4. Price queries (improved matching)
+    price_keywords = ['cheap', 'budget', 'affordable', 'under', 'less than', 'expensive', 'price', 'cost', 'pricing', 'how much', 'how cheap', 'how expensive']
+    if any(word in query_lower for word in price_keywords):
+        # Try to extract specific price threshold
+        price_match = re.search(r'(\d+[km]?|\d+,\d+)', query_lower)
+        threshold = 50000  # Default threshold
+        if price_match:
+            parsed = parse_price(price_match.group(1))
+            if parsed:
+                threshold = parsed
+        
+        # For "cheap" or "affordable" questions without specific number
+        if any(word in query_lower for word in ['cheap', 'affordable', 'budget']) and not price_match:
+            # Calculate price statistics for better AI context
+            prices = [r.getAveragePrice() for r in DATA_SOURCE if r.getAveragePrice() > 0]
+            if prices:
+                avg_price = sum(prices) / len(prices)
+                cheap_threshold = avg_price * 0.6  # 60% of average = cheap
+                cheap = [r for r in DATA_SOURCE if r.getAveragePrice() <= cheap_threshold]
+                cheap.sort(key=lambda x: x.getRating(), reverse=True)
+                
+                if cheap:
+                    names = [r.getName() for r in cheap[:5]]
+                    return {
+                        'response': f"💸 Budget-friendly picks (under {int(cheap_threshold):,} VND): {', '.join(names)}. Most dishes here are very affordable!",
+                        'confidence': 0.88,
+                        'source': 'rule-based',
+                        'restaurants': names
+                    }
+        
+        # For specific price threshold queries
+        cheap = [r for r in DATA_SOURCE if r.getAveragePrice() <= threshold]
+        cheap.sort(key=lambda x: x.getRating(), reverse=True)
+        
+        if cheap:
+            names = [r.getName() for r in cheap[:5]]
+            return {
+                'response': f"💸 Budget-friendly picks under {threshold:,} VND: {', '.join(names)}.",
+                'confidence': 0.88,
+                'source': 'rule-based',
+                'restaurants': names
+            }
+        
+        # If no matches but price-related query, return None to let AI handle it
+        # This allows AI to provide more nuanced price information
+        return None
+    
+    # 5. Cuisine queries
+    cuisines_map = {
+        'vietnamese': ['vietnamese', 'vietnam'],
+        'chinese': ['chinese', 'china'],
+        'japanese': ['japanese', 'japan'],
+        'korean': ['korean', 'korea'],
+        'vegetarian': ['vegetarian', 'veggie'],
+        'vegan': ['vegan'],
+    }
+    
+    for cuisine, keywords in cuisines_map.items():
+        if any(kw in query_lower for kw in keywords):
+            matches = [r for r in DATA_SOURCE if cuisine.lower() in [c.lower() for c in r.getCuisines()]]
+            matches.sort(key=lambda x: x.getRating(), reverse=True)
+            if matches:
+                names = [r.getName() for r in matches[:5]]
+                return {
+                    'response': f"🍜 Top {cuisine} spots: {', '.join(names)}.",
+                    'confidence': 0.85,
+                    'source': 'rule-based',
+                    'restaurants': names
+                }
+    
+    # 6. Best/top queries
+    if any(word in query_lower for word in ['best', 'top', 'recommend', 'suggest']):
+        # Try to match dish
+        for dish_id, dish in dishes.items():
+            dish_name = dish.get('name', '').lower()
+            if dish_name and dish_name in query_lower:
+                matches = [
+                    r for r in DATA_SOURCE
+                    if dish_name in ' '.join([t.lower() for t in r.getTags()])
+                ]
+                matches.sort(key=lambda x: x.getRating(), reverse=True)
+                if matches:
+                    names = [r.getName() for r in matches[:5]]
+                    return {
+                        'response': f"🏆 Top places for {dish.get('name')}: {', '.join(names)}.",
+                        'confidence': 0.85,
+                        'source': 'rule-based',
+                        'restaurants': names
+                    }
+        
+        # General recommendation
+        top_rated = sorted(DATA_SOURCE, key=lambda x: x.getRating(), reverse=True)[:5]
+        names = [r.getName() for r in top_rated]
+        return {
+            'response': f"🌟 Top rated restaurants: {', '.join(names)}.",
+            'confidence': 0.8,
+            'source': 'rule-based',
+            'restaurants': names
+        }
+    
+    # 7. Restaurant name queries
+    for restaurant in DATA_SOURCE:
+        rname = restaurant.getName().lower()
+        if rname and (rname in query_lower or query_lower in rname):
+            return {
+                'response': (
+                    f"📍 {restaurant.getName()} — "
+                    f"Rating: {restaurant.getRating()} • "
+                    f"Price: {restaurant.getPriceText()} • "
+                    f"Hours: {restaurant.getOpenHours()} • "
+                    f"Address: {restaurant.getAddress() or 'N/A'}"
+                ),
+                'confidence': 0.9,
+                'source': 'rule-based'
+            }
+    
+    # 8. Region queries
+    for region in REGIONS_DATA:
+        region_names = [
+            region.get('id', '').lower(),
+            region.get('name', '').lower(),
+            region.get('nameEn', '').lower()
+        ]
+        if any(rn in query_lower for rn in region_names if rn):
+            specialties = ', '.join(region.get('specialties', [])[:5])
+            return {
+                'response': f"📌 {region.get('nameEn', region.get('name'))} specialties: {specialties}. Want restaurant recommendations?",
+                'confidence': 0.85,
+                'source': 'rule-based'
+            }
+    
+    return None  # Can't handle with rules
+
+def get_ollama_ai_response(query: str, context: str = "", history: List[Dict] = None) -> Dict:
+    """
+    Get AI response from local Ollama model
+    The AI can reason about the data and provide intelligent solutions
+    """
+    if not USE_OLLAMA or not REQUESTS_AVAILABLE or not check_ollama_available():
+        return {'response': None, 'source': 'ollama_unavailable', 'cost': 0.0}
+    
+    # Build comprehensive context from project data
+    restaurant_summary = get_restaurant_summary_for_ai()
+    dish_summary = get_dish_summary_for_ai()
+    region_summary = get_region_summary_for_ai()
+    
+    # Build intelligent prompt that encourages reasoning
+    prompt = f"""You are an expert Vietnamese food assistant for Ho Chi Minh City. You have access to REAL DATA about restaurants, dishes, and regions. Use this data to answer questions accurately.
+
+AVAILABLE DATA:
+
+Restaurants (with ratings, prices in VND, cuisines, tags):
+{restaurant_summary}
+
+Dishes (with ingredients, descriptions, history, flavors):
+{dish_summary}
+
+Regions (with specialties):
+{region_summary}
+
+USER QUESTION: {query}
+
+IMPORTANT INSTRUCTIONS:
+1. **PRICE QUESTIONS**: When asked about prices, cheapness, or affordability:
+   - Reference the actual price data provided above
+   - Mention specific price ranges from the data
+   - Compare prices between restaurants if relevant
+   - Use the price statistics to give context (e.g., "Most restaurants range from X to Y VND")
+   - Be specific: "Very affordable" means under 50k VND, "Mid-range" is 50k-150k, "Expensive" is 150k+
+
+2. **RESTAURANT RECOMMENDATIONS**: 
+   - Always use REAL restaurant names from the data above
+   - Include ratings and price info when relevant
+   - Explain WHY you're recommending them
+
+3. **DISH INFORMATION**:
+   - Use the dish data for ingredients, flavors, history
+   - Be specific about taste profiles from the flavors data
+
+4. **GENERAL GUIDELINES**:
+   - Be conversational, friendly, and use emojis (🍜 🍚 🥖 📍 💸 🌶️)
+   - Keep responses informative but concise (100-200 words)
+   - If the data doesn't have what they need, say so honestly
+   - Think step-by-step: What is the user really asking? What data is relevant?
+
+5. **EXAMPLES OF GOOD RESPONSES**:
+   - Price question: "Food here is very affordable! Based on our data, most restaurants range from 25,000-80,000 VND per dish. Street food is typically 20,000-50,000 VND, while sit-down restaurants are 50,000-150,000 VND. Here are some budget-friendly options: [list restaurants from data]"
+   - Dish question: "Cơm Tấm has flavors of: Sweet and light, Grilled aroma, Rich and fatty, Sweet and sour. It's a signature Saigon dish with broken rice, grilled pork, and pickled vegetables."
+
+Now analyze the user's question and provide a helpful, data-driven response:"""
+
+    try:
+        response = requests.post(
+            OLLAMA_URL,
+            json={
+                "model": OLLAMA_MODEL,
+                "prompt": prompt,
+                "stream": False,
+                "options": {
+                    "temperature": 0.7,
+                    "num_predict": 250  # Allow more tokens for reasoning
+                }
+            },
+            timeout=OLLAMA_TIMEOUT
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            response_text = result.get('response', '').strip()
+            
+            # Clean up response
+            if "response:" in response_text.lower():
+                response_text = response_text.split("response:")[-1].strip()
+            if "think" in response_text.lower()[:50]:
+                # Remove thinking process if included
+                lines = response_text.split('\n')
+                response_text = '\n'.join([l for l in lines if not l.strip().startswith('Think')])
+            
+            return {
+                'response': response_text,
+                'source': 'ollama_ai',
+                'cost': 0.0,
+                'model': OLLAMA_MODEL
+            }
+        else:
+            return {'response': None, 'source': 'error', 'cost': 0.0}
+    except requests.exceptions.Timeout:
+        return {
+            'response': "I'm taking too long to respond. Please try a simpler question or check if Ollama is running.",
+            'source': 'timeout',
+            'cost': 0.0
+        }
+    except Exception as e:
+        print(f"Ollama error: {e}")
+        return {'response': None, 'source': 'error', 'cost': 0.0}
+
+@app.route('/api/chatbot', methods=['POST'])
+def chatbot():
+    """
+    Enhanced FREE chatbot endpoint
+    Uses rule-based first, then AI (Ollama) for complex queries
+    Can reason about project data and provide intelligent solutions
+    """
+    try:
+        data = request.json
+        user_message = data.get('message', '').strip()
+        conversation_history = data.get('history', [])
+        
+        if not user_message:
+            return jsonify({
+                'response': "Please provide a message.",
+                'source': 'error'
+            }), 400
+        
+        # Check cache
+        cache_key = hashlib.md5(user_message.lower().strip().encode()).hexdigest()
+        if cache_key in chatbot_cache:
+            cached = chatbot_cache[cache_key]
+            if time.time() - cached.get('timestamp', 0) < 3600:  # 1 hour TTL
+                return jsonify({
+                    'response': cached['response'],
+                    'restaurants': cached.get('restaurants', []),
+                    'source': cached.get('source', 'cached')
+                })
+        
+        # Step 1: Try rule-based first (fast, uses project data)
+        # Only use rule-based for very high confidence matches (0.9+)
+        # This allows AI to handle more varied questions
+        rule_response = try_rule_based_chatbot(user_message)
+        
+        if rule_response and rule_response.get('confidence', 0) >= 0.9:
+            result = {
+                'response': rule_response['response'],
+                'restaurants': rule_response.get('restaurants', []),
+                'source': rule_response['source'],
+                'confidence': rule_response['confidence']
+            }
+        else:
+            # Step 2: Use AI for most queries (can reason about data and handle variations)
+            # AI is better at understanding intent and providing contextual answers
+            ollama_response = get_ollama_ai_response(user_message, history=conversation_history)
+            
+            if ollama_response.get('response'):
+                result = {
+                    'response': ollama_response['response'],
+                    'restaurants': [],
+                    'source': ollama_response['source'],
+                    'cost': 0.0
+                }
+            else:
+                # Step 3: Fallback - If AI unavailable, try rule-based with lower threshold
+                # This ensures the chatbot still works even without Ollama
+                if rule_response and rule_response.get('confidence', 0) >= 0.7:
+                    # Use rule-based response even if confidence is lower
+                    result = {
+                        'response': rule_response['response'],
+                        'restaurants': rule_response.get('restaurants', []),
+                        'source': rule_response['source'] + '_fallback',
+                        'confidence': rule_response['confidence']
+                    }
+                else:
+                    # Final fallback - generic helpful message
+                    result = {
+                        'response': (
+                            "I understand you're looking for information about Vietnamese food in Ho Chi Minh City. "
+                            "Could you be more specific? For example:\n"
+                            "• 'What is phở?'\n"
+                            "• 'Best restaurants under 50k'\n"
+                            "• 'Tell me about Vietnamese cuisine'\n"
+                            "• 'Where can I find vegetarian options?'\n\n"
+                            "💡 Tip: For AI-powered responses, make sure Ollama is running with llama3.2:3b model."
+                        ),
+                        'source': 'fallback'
+                    }
+        
+        # Cache the response
+        chatbot_cache[cache_key] = {
+            'response': result['response'],
+            'restaurants': result.get('restaurants', []),
+            'source': result.get('source', 'unknown'),
+            'timestamp': time.time()
+        }
+        
+        # Clean old cache (keep last 500)
+        if len(chatbot_cache) > 500:
+            sorted_cache = sorted(
+                chatbot_cache.items(),
+                key=lambda x: x[1].get('timestamp', 0)
+            )
+            for key, _ in sorted_cache[:-500]:
+                del chatbot_cache[key]
+        
+        return jsonify(result)
+        
+    except Exception as e:
+        print(f"❌ Chatbot error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            'response': "I'm sorry, I encountered an error. Please try again.",
+            'source': 'error'
+        }), 500
+
+@app.route('/api/chatbot/stats', methods=['GET'])
+def chatbot_stats():
+    """Get chatbot statistics"""
+    ollama_available = check_ollama_available()
+    
+    return jsonify({
+        'ollama_available': ollama_available,
+        'ollama_model': OLLAMA_MODEL if ollama_available else None,
+        'use_ollama': USE_OLLAMA,
+        'cache_size': len(chatbot_cache),
+        'restaurants_loaded': len(DATA_SOURCE),
+        'dishes_loaded': len(DISHES_DATA.get('dishes', {})),
+        'regions_loaded': len(REGIONS_DATA),
+        'chat_data_loaded': len(CHAT_DATA),
+        'cost': 0.0,  # Always free!
+        'source': 'free_implementation'
+    })
+
+# ----------------------------------------------------------------------------
 # SURVEY RECOMMENDATION API ENDPOINT
 # ----------------------------------------------------------------------------
 
@@ -737,4 +1369,27 @@ def filter_by_cravings(restaurants, cravings):
 
 # Start the Flask server
 if __name__ == "__main__":
+    print("\n" + "="*60)
+    print("🍜 Culinary Compass Chatbot Server Starting...")
+    print("="*60)
+    
+    # Check Ollama status
+    ollama_status = check_ollama_available()
+    if ollama_status:
+        print(f"✅ Ollama is running with model: {OLLAMA_MODEL}")
+        print("   → AI-powered responses are ENABLED")
+        print("   → Most queries will use AI to learn from your data")
+    else:
+        print("⚠️  Ollama is NOT available")
+        print("   → Chatbot will use rule-based responses only")
+        print("   → To enable AI: Install Ollama and run: ollama pull llama3.2:3b")
+        print("   → See OLLAMA_SETUP_GUIDE.md for instructions")
+    
+    print(f"\n📊 Data loaded:")
+    print(f"   → Restaurants: {len(DATA_SOURCE)}")
+    print(f"   → Dishes: {len(DISHES_DATA.get('dishes', {}))}")
+    print(f"   → Regions: {len(REGIONS_DATA)}")
+    print(f"\n🚀 Server running on http://localhost:5000")
+    print("="*60 + "\n")
+    
     app.run(debug=True, port=5000)

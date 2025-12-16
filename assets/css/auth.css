@@ -20,7 +20,6 @@ body {
 .left-panel {
     flex: 1;
     background-image: url('../images/food-bg.jpg');
-    background: linear-gradient(rgba(220, 38, 38, 0.7), rgba(234, 88, 12, 0.7)), url('../images/food-bg.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -32,7 +31,7 @@ body {
     content: "";
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.3); 
+    background: linear-gradient(to bottom, rgba(123, 30, 30, 0.6), rgba(90, 20, 20, 0.9));
 }
 
 .overlay {
@@ -46,30 +45,32 @@ body {
 }
 
 .brand-name {
-    font-size: 4rem;
-    font-weight: bold;
+    font-size: 6rem;
+    text-transform: uppercase;
+    font-weight: 800;
     line-height: 1.2;
-    margin-bottom: 20px;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 25px;
+    text-shadow: 2px 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .slogan {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: white;
     font-style: italic;
-    opacity: 0.95;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Right Panel - Form */
 .right-panel {
-    width: 500px;
+    width: 800px;
     background: white;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px;
+    padding-top: 20vh;
     position: relative;
-    overflow-y: auto;
 }
 
 /* Auth Tabs */
@@ -77,7 +78,8 @@ body {
     background: #f0f0f0;
     border-radius: 20px;
     padding: 5px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+    flex-shrink: 0;
     display: flex;
 }
 
@@ -91,13 +93,13 @@ body {
 }
 
 .tab.active {
-    background: #DC2626;
+    background: #7B1E1E;
     color: white;
 }
 
 .form-wrapper {
     width: 100%;
-    max-width: 350px;
+    max-width: 400px;
 }
 
 h2 {
@@ -135,7 +137,7 @@ h2 {
 }
 
 .input-group input:focus {
-    border-color: #DC2626;
+    border-color: #7B1E1E;
     background: white;
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
@@ -144,7 +146,7 @@ h2 {
 .btn-submit {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #EA580C, #DC2626);
+    background: #7B1E1E;
     color: white;
     border: none;
     border-radius: 8px;
@@ -157,8 +159,7 @@ h2 {
 }
 
 .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+    background: #5a1515;
 }
 
 .btn-submit:active {
@@ -174,7 +175,7 @@ h2 {
 }
 
 .footer-text a {
-    color: #DC2626;
+    color: #7B1E1E;
     text-decoration: none;
     font-weight: bold;
 }

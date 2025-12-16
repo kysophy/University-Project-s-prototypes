@@ -46,7 +46,8 @@ body {
 }
 
 .back-home-btn {
-    padding: 10px 20px;
+    padding: 10px 10px;
+    max-width: fit-content;
     background: linear-gradient(135deg, #EA580C, #DC2626);
     color: white;
     border: none;
