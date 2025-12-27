@@ -8,11 +8,9 @@ function mockGenerateJWT(payload) {
 
 // Go back to previous page or home
 function goBack() {
-    // Check if there's a previous page in history
     if (window.history.length > 1) {
         window.history.back();
     } else {
-        // If no history, go to home
         window.location.href = '../index.html';
     }
 }
@@ -31,10 +29,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get DOM elements
     const usernameInput = document.getElementById('username-input');
     const emailInput = document.getElementById('email-input');
-    const passwordInput = document.getElementById('password-input');
-    const passwordRow = document.getElementById('password-row');
-    const avatarCircle = document.querySelector('.avatar-circle');
     
+    // NEW: Get password elements
+    const passwordSection = document.getElementById('password-section');
+    const newPasswordInput = document.getElementById('new-password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    
+    const avatarCircle = document.querySelector('.avatar-circle');
     const editBtn = document.getElementById('edit-btn');
     const saveBtn = document.getElementById('save-btn');
     const cancelBtn = document.getElementById('cancel-btn');
@@ -49,7 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
             usernameInput.value = storedUser.username;
             emailInput.value = storedUser.email;
             avatarCircle.innerText = storedUser.username.charAt(0).toUpperCase();
-            passwordInput.value = "";
+            
+            // Clear password fields on render/cancel
+            newPasswordInput.value = "";
+            confirmPasswordInput.value = "";
             
             // Update dates
             if (storedUser.createdAt) {
@@ -69,7 +73,10 @@ document.addEventListener('DOMContentLoaded', function() {
     editBtn.addEventListener('click', function() {
         usernameInput.disabled = false;
         emailInput.disabled = false;
-        passwordRow.style.display = 'block';
+        
+        // Show the password section
+        passwordSection.style.display = 'block';
+        
         actionButtons.style.display = 'flex';
         editBtn.style.display = 'none';
     });
@@ -78,7 +85,10 @@ document.addEventListener('DOMContentLoaded', function() {
     cancelBtn.addEventListener('click', function() {
         usernameInput.disabled = true;
         emailInput.disabled = true;
-        passwordRow.style.display = 'none';
+        
+        // Hide the password section
+        passwordSection.style.display = 'none';
+        
         actionButtons.style.display = 'none';
         editBtn.style.display = 'block';
         renderData();
@@ -89,9 +99,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const oldUsername = currentUser.username;
         const newUsername = usernameInput.value.trim();
         const newEmail = emailInput.value.trim();
-        const newPassword = passwordInput.value.trim();
+        
+        // Get password values
+        const newPass = newPasswordInput.value.trim();
+        const confirmPass = confirmPasswordInput.value.trim();
 
-        // Validation
+        // Basic Validation
         if (!newUsername || !newEmail) {
             alert("Username and Email cannot be empty!");
             return;
@@ -102,40 +115,53 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(newEmail)) {
             alert('Invalid email!');
             return;
         }
 
+        // --- PASSWORD VALIDATION LOGIC ---
+        let passwordChanged = false;
+
+        // Only check password if the user typed something in the new password field
+        if (newPass.length > 0) {
+            if (newPass.length < 6) {
+                alert("New password must be at least 6 characters long!");
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                alert("⚠️ Passwords do not match! Please type them again.");
+                // Clear the confirm field to force retyping
+                confirmPasswordInput.value = "";
+                confirmPasswordInput.focus();
+                return;
+            }
+            
+            passwordChanged = true;
+        }
+        // --------------------------------
+
         // Get user data from storage
         let userData = JSON.parse(localStorage.getItem(oldUsername));
 
-        // If username changed, check if new username is available
+        // If username changed, check availability
         if (newUsername !== oldUsername) {
             if (localStorage.getItem(newUsername)) {
                 alert("New username is already taken! Please choose another name.");
                 return;
             }
-
-            // Remove old username entry
             localStorage.removeItem(oldUsername);
-            
-            // Update username
             userData.username = newUsername;
         }
 
         // Update email
         userData.email = newEmail;
         
-        // Update password if provided
-        if (newPassword) {
-            if (newPassword.length < 6) {
-                alert("Password must be at least 6 characters!");
-                return;
-            }
-            userData.password = newPassword;
+        // Update password only if changed
+        if (passwordChanged) {
+            userData.password = newPass;
         }
 
         // Save to storage
@@ -152,8 +178,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         localStorage.setItem('accessToken', newToken);
 
-        // Success
-        alert("Profile updated successfully! ✅");
+        // Success Message
+        let msg = "Profile updated successfully! ✅";
+        if (passwordChanged) {
+            msg += "\nYour password has been changed.";
+        }
+        alert(msg);
         
         // Return to view mode
         cancelBtn.click();
@@ -168,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Global logout function (can be called from onclick)
+// Global logout function
 function handleLogout() {
     if (confirm('Are you sure you want to sign out?')) {
         localStorage.removeItem('accessToken');
@@ -177,4 +207,3 @@ function handleLogout() {
         window.location.href = 'signin.html';
     }
 }
-

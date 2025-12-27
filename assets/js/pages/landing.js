@@ -343,6 +343,21 @@ function showWelcomeModal(region) {
     
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
+
+    // *** FIX: ADD CLICK LISTENER TO CLOSE MODAL ***
+    modal.addEventListener('click', (e) => {
+        // Only close if clicking the dark background (modal), not the white box (modal-content)
+        if (e.target === modal) {
+            modal.remove();
+            document.body.style.overflow = '';
+            
+            // Reset button state
+            isEntering = false;
+            buttonText.textContent = 'Start Exploring';
+            startButton.disabled = false;
+            startButton.style.opacity = '1';
+        }
+    });
 }
 
 // Proceed to map (this would navigate to your map page)
@@ -458,4 +473,3 @@ regionCards.forEach(card => {
 });
 
 console.log('🍜 Culinary Compass Vietnam initialized successfully!');
-

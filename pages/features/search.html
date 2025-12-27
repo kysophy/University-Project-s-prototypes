@@ -414,16 +414,29 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="search-header">
-        <div class="header-content">
-            <button class="back-button" onclick="goBack()">
-                <span class="material-icons-outlined">arrow_back</span>
-                <span>Back</span>
-            </button>
-            <h1 class="header-title">Culinary Compass</h1>
-            <div class="nav-actions" id="navActions">
-                <!-- Will be populated by auth.js -->
+    <header class="header" style="height: 70px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; margin-bottom: 2rem;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem; width: 100%;">
+            <div class="header-content" style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
+                
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button onclick="goBack()" style="display: flex; align-items: center; justify-content: center; background: #F3F4F6; border: none; cursor: pointer; color: #374151; width: 40px; height: 40px; border-radius: 50%; transition: background 0.2s;">
+                        <span class="material-icons-outlined" style="font-size: 20px;">arrow_back</span>
+                    </button>
+                    
+                    <a href="../../index.html" class="logo-container" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 40px; height: 40px;">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#DC2626" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="header-text" style="display: flex; flex-direction: column;">
+                            <h1 class="header-title" style="font-size: 1.25rem; font-weight: 700; color: #111827; margin: 0; line-height: 1.2;">Culinary Compass</h1>
+                            <p class="header-subtitle" style="font-size: 0.875rem; color: #6B7280; margin: 0;">Discover Vietnamese Cuisine</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="nav-actions" id="navActions" style="display: flex; align-items: center; gap: 1rem;"></div>
             </div>
         </div>
     </header>
@@ -504,6 +517,7 @@
     <script src="../../assets/js/auth.js"></script>
     <script src="../../assets/js/favorites.js"></script>
     <script>
+        
         // Back button
         function goBack() {
             window.history.back();

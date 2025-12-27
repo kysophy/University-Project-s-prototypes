@@ -13,26 +13,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo-section">
-                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#DC2626" stroke="#DC2626" stroke-width="2"/>
-                        <path d="M2 17L12 22L22 17" stroke="#DC2626" stroke-width="2"/>
-                        <path d="M2 12L12 17L22 12" stroke="#DC2626" stroke-width="2"/>
+    <header class="header" style="height: 70px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem; width: 100%;">
+            <div class="header-content" style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
+                
+                <a href="../../index.html" class="logo-container" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 40px; height: 40px;">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#DC2626" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#content">Content</a></li>
-                    <li><a href="#stories">Culinary Stories</a></li>
-                    <li><a href="#about">About Us</a></li>
-                </ul>
-                <div class="nav-actions" id="navActions">
+                    <div class="header-text" style="display: flex; flex-direction: column;">
+                        <h1 class="header-title" style="font-size: 1.25rem; font-weight: 700; color: #111827; margin: 0; line-height: 1.2;">Culinary Compass Vietnam</h1>
+                        <p class="header-subtitle" style="font-size: 0.875rem; color: #6B7280; margin: 0;">Discover Vietnamese Cuisine</p>
                     </div>
+                </a>
+                
+                <ul class="nav-links" style="display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0;">
+                    <li><a href="#content" style="text-decoration: none; color: #374151; font-weight: 500; font-size: 0.95rem;">Content</a></li>
+                    <li><a href="#stories" style="text-decoration: none; color: #374151; font-weight: 500; font-size: 0.95rem;">Stories</a></li>
+                    <li><a href="#about" style="text-decoration: none; color: #374151; font-weight: 500; font-size: 0.95rem;">About Us</a></li>
+                </ul>
+
+                <div class="nav-actions" id="navActions" style="display: flex; align-items: center; gap: 1rem;"></div>
             </div>
         </div>
-    </nav>
+    </header>
 
     <section class="hero-section" style="background-image: url('../../assets/images/regions/hcmc.jpg');">
         <div class="hero-overlay"></div>

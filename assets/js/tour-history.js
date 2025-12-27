@@ -46,7 +46,12 @@ function loadTourHistory() {
     console.log("Loading history for user:", currentUser);
     console.log("Reading key:", historyKey);
 
-    const tours = JSON.parse(localStorage.getItem(historyKey)) || [];
+    // Remove 'const' so we update the global variable defined at the top of the file
+    tourHistory = JSON.parse(localStorage.getItem(historyKey)) || []; 
+    
+    // Create a local reference for the rest of this function to work without changing more code
+    const tours = tourHistory; 
+
     const container = document.getElementById('tours-container');
     const emptyState = document.getElementById('empty-state');
 
@@ -344,15 +349,55 @@ function deleteTour(tourId) {
     loadTourHistory();
 }
 
-// Export history
+// Export history to CSV
 function exportHistory() {
-    if (tourHistory.length === 0) {
+    // 1. Check if there is data
+    if (!tourHistory || tourHistory.length === 0) {
         showNotification('No data to export!', 'info');
         return;
     }
 
-    // Create CSV content
-    let csvContent = 'Tour Name,Date,Status,Stops,Duration,Distance\n';
+    // 2. Calculate Totals for the Report
+    let totalRestaurants = 0;
+    let totalDishes = 0;
+    let totalDistance = 0;
+
+    // Helper to calculate distance consistent with UI
+    // If saved distance exists, use it. Otherwise, estimate 1.5km per stop.
+    const getDistance = (tour) => {
+        let d = parseFloat(tour.distance);
+        if (isNaN(d) || d === 0) {
+            d = (tour.stops ? tour.stops.length : 0) * 1.5;
+        }
+        return d;
+    };
+
+    tourHistory.forEach(tour => {
+        const stopCount = tour.stops ? tour.stops.length : 0;
+        totalRestaurants += stopCount;
+        totalDishes += stopCount; 
+        
+        totalDistance += getDistance(tour);
+    });
+
+    // 3. Create CSV Content
+    // \uFEFF is the BOM to ensure Excel opens Vietnamese characters correctly
+    let csvContent = '\uFEFF'; 
+    
+    // --- SECTION A: SUMMARY STATISTICS ---
+    csvContent += `CULINARY COMPASS - TOUR REPORT\n`;
+    csvContent += `Generated on,${new Date().toLocaleDateString('vi-VN')}\n\n`;
+    
+    csvContent += `SUMMARY STATISTICS\n`;
+    csvContent += `Total Tours Completed,${tourHistory.length}\n`;
+    csvContent += `Total Restaurants Visited,${totalRestaurants}\n`;
+    csvContent += `Total Dishes Tried,${totalDishes}\n`;
+    // Format to 1 decimal place to match the UI (e.g. "1.5 km")
+    csvContent += `Total Distance Traveled,${totalDistance.toFixed(1)} km\n\n`;
+
+    // --- SECTION B: DETAILED LOG ---
+    csvContent += `DETAILED TOUR LOG\n`;
+    csvContent += `Tour Name,Date,Status,Stops,Duration,Distance (km)\n`;
     
     tourHistory.forEach(tour => {
         const statusLabels = {
@@ -361,21 +406,35 @@ function exportHistory() {
             'cancelled': 'Cancelled'
         };
         
-        csvContent += `"${tour.name}",${formatDate(tour.date)},${statusLabels[tour.status]},${tour.stops.length},${tour.duration},${tour.distance} km\n`;
+        // Handle commas in names by wrapping in quotes
+        const safeName = `"${tour.name ? tour.name.replace(/"/g, '""') : 'Unnamed Tour'}"`;
+        const dateStr = tour.date ? new Date(tour.date).toLocaleDateString('vi-VN') : 'N/A';
+        const status = statusLabels[tour.status] || tour.status;
+        const stops = tour.stops ? tour.stops.length : 0;
+        const dist = getDistance(tour).toFixed(1); // Use the same consistent calculation
+        
+        csvContent += `${safeName},${dateStr},${status},${stops},${tour.duration || 'Flexible'},${dist}\n`;
     });
 
-    // Create download link
+    // 4. Trigger Download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
     
+    // Create a unique filename with date
+    const dateStr = new Date().toISOString().split('T')[0];
+    const fileName = `Travel_Report_${dateStr}.csv`;
+    
+    // Standard download logic
+    const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `tour-history-${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', fileName);
     link.style.visibility = 'hidden';
     
     document.body.appendChild(link);
     link.click();
+    
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 
     showNotification('Report exported successfully!', 'success');
 }

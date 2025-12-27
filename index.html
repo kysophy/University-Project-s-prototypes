@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
@@ -28,13 +27,11 @@
                     </div>
                 </div>
                 <div class="nav-actions" id="navActions">
-                    <!-- Will be populated by JavaScript based on login state -->
-                </div>
+                    </div>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
             <div class="hero-content">
@@ -48,9 +45,7 @@
                 </p>
             </div>
 
-            <!-- Region Cards -->
             <div class="region-grid" id="regionGrid">
-                <!-- Hà Nội -->
                 <div class="region-card" data-region="hanoi">
                     <div class="card-image-container">
                         <img src="https://images.unsplash.com/photo-1695297083943-8f62f476939e?w=800" alt="Hà Nội" class="card-image">
@@ -75,7 +70,6 @@
                     </div>
                 </div>
 
-                <!-- TP. Hồ Chí Minh -->
                 <div class="region-card" data-region="saigon">
                     <div class="card-image-container">
                         <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800" alt="TP. Hồ Chí Minh" class="card-image">
@@ -100,7 +94,6 @@
                     </div>
                 </div>
 
-                <!-- Đà Nẵng -->
                 <div class="region-card" data-region="danang">
                     <div class="card-image-container">
                         <img src="https://images.unsplash.com/photo-1505018620898-92616e1849cc?w=800" alt="Đà Nẵng" class="card-image">
@@ -125,7 +118,6 @@
                     </div>
                 </div>
 
-                <!-- Huế -->
                 <div class="region-card" data-region="hue">
                     <div class="card-image-container">
                         <img src="assets/images/regions/hue.webp" alt="Huế" class="card-image">
@@ -151,7 +143,6 @@
                 </div>
             </div>
 
-            <!-- Start Button -->
             <div class="button-container">
                 <button id="startButton" class="start-button" disabled>
                     <svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -168,11 +159,9 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section class="features-section">
         <div class="container">
             <div class="features-grid">
-                <!-- Feature 1 -->
                 <div class="feature-card">
                     <div class="feature-icon-container map-icon">
                         <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -183,7 +172,6 @@
                     <p class="feature-description">Discover great restaurants and famous dining spots</p>
                 </div>
 
-                <!-- Feature 2 -->
                 <div class="feature-card">
                     <div class="feature-icon-container star-icon">
                         <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -194,7 +182,6 @@
                     <p class="feature-description">Read reviews from real diners and share your experience</p>
                 </div>
 
-                <!-- Feature 3 -->
                 <div class="feature-card">
                     <div class="feature-icon-container book-icon">
                         <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -208,15 +195,50 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <p class="footer-text">© 2025 Food Tour Vietnam. Discover the Flavors of Vietnam.</p>
         </div>
     </footer>
+    
+    <div id="confirmModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ready to explore?</h3>
+            </div>
+            
+            <div class="modal-body">
+                <p>You have selected <strong id="selectedRegionName">Region</strong>.</p>
+                <p>Click outside this box to cancel, or click the button below to continue.</p>
+            </div>
 
+            <div class="modal-footer">
+                <button id="finalStartBtn" class="btn-primary" style="width: 100%;">Let's Go!</button>
+            </div>
+        </div>
+    </div>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/pages/landing.js"></script>
+
+    <div id="accountDropdown" class="account-dropdown" style="display: none;">
+        <div class="dropdown-content">
+            <div class="dropdown-header">
+                <div class="user-avatar">
+                    <span id="userInitial">U</span>
+                </div>
+                <div class="user-info">
+                    <p class="user-name" id="userName">User</p>
+                    <p class="user-email">user@example.com</p>
+                </div>
+            </div>
+            <hr class="dropdown-divider">
+            <a href="profile.html" class="dropdown-item">My Account</a>
+            <a href="favorites.html" class="dropdown-item">Favorite Restaurants</a>
+            <a href="tour-history.html" class="dropdown-item">Tour History</a>
+            <hr class="dropdown-divider">
+            <a href="#" class="dropdown-item logout-item" onclick="handleLogout(); return false;">Sign Out</a>
+        </div>
+    </div>
 </body>
 </html>
